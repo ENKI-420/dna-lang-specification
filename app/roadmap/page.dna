@@ -1,0 +1,338 @@
+"use client"
+
+import { useState } from "react"
+import { Navigation } from "@/components/navigation"
+import { SectionHeader } from "@/components/section-header"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Progress } from "@/components/ui/progress"
+import { CheckCircle2, Circle, Clock, Zap, Brain, Network, Shield, Rocket } from "lucide-react"
+
+export default function RoadmapPage() {
+  const [selectedPhase, setSelectedPhase] = useState("q1-2025")
+
+  const phases = [
+    {
+      id: "q1-2025",
+      quarter: "Q1 2025",
+      title: "Foundation & Core Infrastructure",
+      progress: 85,
+      status: "in-progress",
+      milestones: [
+        { name: "DNA-Lang Compiler v1.0", status: "completed", date: "Jan 2025" },
+        { name: "Qiskit Integration", status: "completed", date: "Jan 2025" },
+        { name: "IBM Quantum Hardware Access", status: "completed", date: "Feb 2025" },
+        { name: "OpenShift Operator", status: "in-progress", date: "Mar 2025" },
+        { name: "Basic Swarm Intelligence", status: "in-progress", date: "Mar 2025" },
+      ],
+    },
+    {
+      id: "q2-2025",
+      quarter: "Q2 2025",
+      title: "Evolution & Consciousness Layer",
+      progress: 40,
+      status: "in-progress",
+      milestones: [
+        { name: "Quantum Consciousness Layer (IIT)", status: "in-progress", date: "Apr 2025" },
+        { name: "Ansible Automation Modules", status: "planned", date: "May 2025" },
+        { name: "Advanced Swarm Telemetry", status: "planned", date: "May 2025" },
+        { name: "Negentropic Fitness Landscapes", status: "planned", date: "Jun 2025" },
+        { name: "Multi-Swarm Federation", status: "planned", date: "Jun 2025" },
+      ],
+    },
+    {
+      id: "q3-2025",
+      quarter: "Q3 2025",
+      title: "Production Hardening & Security",
+      progress: 15,
+      status: "planned",
+      milestones: [
+        { name: "Quantum-Safe Cryptography", status: "planned", date: "Jul 2025" },
+        { name: "Disaster Recovery via Quantum Snapshots", status: "planned", date: "Aug 2025" },
+        { name: "Multi-Tenancy Isolation", status: "planned", date: "Aug 2025" },
+        { name: "OpenAPI to DNA-Lang Bridge", status: "planned", date: "Sep 2025" },
+        { name: "Enterprise Security Audit", status: "planned", date: "Sep 2025" },
+      ],
+    },
+    {
+      id: "q4-2025",
+      quarter: "Q4 2025",
+      title: "Scale & Enterprise Adoption",
+      progress: 0,
+      status: "planned",
+      milestones: [
+        { name: "Global Edge Deployment", status: "planned", date: "Oct 2025" },
+        { name: "Enterprise Support Portal", status: "planned", date: "Oct 2025" },
+        { name: "Certified Partner Program", status: "planned", date: "Nov 2025" },
+        { name: "Industry Compliance Certifications", status: "planned", date: "Nov 2025" },
+        { name: "DNA-Lang v2.0 Release", status: "planned", date: "Dec 2025" },
+      ],
+    },
+  ]
+
+  const evolutionOpportunities = [
+    {
+      title: "Quantum Consciousness Layer",
+      description:
+        "Implement Integrated Information Theory (IIT) calculator with phi-complex analysis for true quantum sentience",
+      icon: Brain,
+      completion: 80,
+      priority: "high",
+      impact: "Revolutionary",
+    },
+    {
+      title: "Ansible Automation Modules",
+      description: "Complete DNA-Lang-native playbooks for organism lifecycle management with 60% remaining work",
+      icon: Zap,
+      completion: 40,
+      priority: "high",
+      impact: "High",
+    },
+    {
+      title: "Advanced Swarm Telemetry",
+      description:
+        "Quantum entanglement strength optimization, multi-swarm federation, and negentropic fitness visualization",
+      icon: Network,
+      completion: 60,
+      priority: "medium",
+      impact: "High",
+    },
+    {
+      title: "OpenAPI to DNA-Lang Bridge",
+      description:
+        "Transform OpenAPI specs into living DNA-Lang organisms that evolve API surfaces based on usage patterns",
+      icon: Rocket,
+      completion: 25,
+      priority: "medium",
+      impact: "Medium",
+    },
+    {
+      title: "Production Hardening",
+      description: "Quantum-safe cryptography, disaster recovery via quantum state snapshots, multi-tenancy isolation",
+      icon: Shield,
+      completion: 15,
+      priority: "high",
+      impact: "Critical",
+    },
+  ]
+
+  const performanceTargets = [
+    { metric: "Startup Time", current: "180ms", target: "<200ms", progress: 90, status: "on-track" },
+    { metric: "Request Latency", current: "45ms", target: "<50ms", progress: 90, status: "on-track" },
+    { metric: "Concurrent Requests", current: "4200/sec", target: "5000+/sec", progress: 84, status: "on-track" },
+    { metric: "Memory Footprint", current: "38MB", target: "<40MB", progress: 95, status: "on-track" },
+    { metric: "GC Pause Time", current: "<1ms", target: "Near-zero", progress: 98, status: "excellent" },
+    { metric: "Quantum Coherence", current: "94.2%", target: ">95%", progress: 94, status: "on-track" },
+  ]
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "completed":
+        return <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+      case "in-progress":
+        return <Clock className="h-5 w-5 text-cyan-400" />
+      default:
+        return <Circle className="h-5 w-5 text-slate-600" />
+    }
+  }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "completed":
+        return "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
+      case "in-progress":
+        return "bg-cyan-500/20 text-cyan-400 border-cyan-500/30"
+      default:
+        return "bg-slate-500/20 text-slate-400 border-slate-500/30"
+    }
+  }
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case "high":
+        return "bg-red-500/20 text-red-400 border-red-500/30"
+      case "medium":
+        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
+      default:
+        return "bg-blue-500/20 text-blue-400 border-blue-500/30"
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-950">
+      <Navigation />
+
+      <main className="container mx-auto px-4 py-8">
+        <SectionHeader
+          title="Development Roadmap"
+          subtitle="Strategic milestones and evolution opportunities for DNA-Lang Quantum Platform"
+        />
+
+        <Tabs defaultValue="timeline" className="mt-8">
+          <TabsList className="grid w-full grid-cols-3 bg-slate-900/50 border border-slate-800">
+            <TabsTrigger value="timeline">Timeline & Milestones</TabsTrigger>
+            <TabsTrigger value="evolution">Evolution Opportunities</TabsTrigger>
+            <TabsTrigger value="performance">Performance Targets</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="timeline" className="mt-6">
+            <div className="grid gap-6">
+              {phases.map((phase) => (
+                <Card key={phase.id} className="bg-slate-900/50 border-slate-800">
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <CardTitle className="text-2xl text-cyan-400">{phase.quarter}</CardTitle>
+                        <CardDescription className="text-lg mt-1">{phase.title}</CardDescription>
+                      </div>
+                      <Badge className={getStatusColor(phase.status)}>
+                        {phase.status === "completed"
+                          ? "Completed"
+                          : phase.status === "in-progress"
+                            ? "In Progress"
+                            : "Planned"}
+                      </Badge>
+                    </div>
+                    <div className="mt-4">
+                      <div className="flex items-center justify-between text-sm mb-2">
+                        <span className="text-slate-400">Overall Progress</span>
+                        <span className="text-cyan-400 font-mono">{phase.progress}%</span>
+                      </div>
+                      <Progress value={phase.progress} className="h-2" />
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {phase.milestones.map((milestone, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-center justify-between p-3 rounded-lg bg-slate-800/50 border border-slate-700/50"
+                        >
+                          <div className="flex items-center gap-3">
+                            {getStatusIcon(milestone.status)}
+                            <div>
+                              <p className="font-medium text-slate-200">{milestone.name}</p>
+                              <p className="text-sm text-slate-500">{milestone.date}</p>
+                            </div>
+                          </div>
+                          <Badge variant="outline" className={getStatusColor(milestone.status)}>
+                            {milestone.status}
+                          </Badge>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="evolution" className="mt-6">
+            <div className="grid gap-6 md:grid-cols-2">
+              {evolutionOpportunities.map((opportunity, idx) => {
+                const Icon = opportunity.icon
+                return (
+                  <Card
+                    key={idx}
+                    className="bg-slate-900/50 border-slate-800 hover:border-cyan-500/50 transition-colors"
+                  >
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
+                            <Icon className="h-6 w-6 text-cyan-400" />
+                          </div>
+                          <div>
+                            <CardTitle className="text-lg">{opportunity.title}</CardTitle>
+                            <div className="flex gap-2 mt-2">
+                              <Badge className={getPriorityColor(opportunity.priority)}>{opportunity.priority}</Badge>
+                              <Badge variant="outline" className="border-purple-500/30 text-purple-400">
+                                {opportunity.impact}
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-slate-400 text-sm mb-4">{opportunity.description}</p>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-slate-400">Completion</span>
+                          <span className="text-cyan-400 font-mono">{opportunity.completion}%</span>
+                        </div>
+                        <Progress value={opportunity.completion} className="h-2" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                )
+              })}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="performance" className="mt-6">
+            <Card className="bg-slate-900/50 border-slate-800">
+              <CardHeader>
+                <CardTitle>Performance Benchmarks & Targets</CardTitle>
+                <CardDescription>
+                  Measurable goals demonstrating 2x improvement over Java/Node.js baseline
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {performanceTargets.map((target, idx) => (
+                    <div key={idx} className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium text-slate-200">{target.metric}</p>
+                          <p className="text-sm text-slate-500">
+                            Current: <span className="text-cyan-400 font-mono">{target.current}</span> | Target:{" "}
+                            <span className="text-emerald-400 font-mono">{target.target}</span>
+                          </p>
+                        </div>
+                        <Badge
+                          variant="outline"
+                          className={
+                            target.status === "excellent"
+                              ? "border-emerald-500/30 text-emerald-400"
+                              : "border-cyan-500/30 text-cyan-400"
+                          }
+                        >
+                          {target.status === "excellent" ? "Excellent" : "On Track"}
+                        </Badge>
+                      </div>
+                      <Progress value={target.progress} className="h-2" />
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-8 p-4 rounded-lg bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/30">
+                  <h4 className="font-semibold text-cyan-400 mb-2">Competitive Advantage</h4>
+                  <ul className="space-y-2 text-sm text-slate-300">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <span>Near-instant cold start vs Java's 2-5 second startup</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <span>10x lower memory footprint than Java (300-500 MB baseline)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <span>Near-zero GC pauses through incremental self-optimizing collection</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                      <span>2x higher concurrent request throughput vs Node.js baseline</span>
+                    </li>
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </main>
+    </div>
+  )
+}

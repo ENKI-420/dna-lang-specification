@@ -1,0 +1,381 @@
+import type React from "react"
+import { Card } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { QuantumBackground } from "@/components/quantum-background"
+import { SectionHeader } from "@/components/section-header"
+import { Building2, TrendingUp, Users, Zap, CheckCircle, ArrowRight, Brain, Shield, Globe, Cpu } from "lucide-react"
+
+export default function CaseStudiesPage() {
+  return (
+    <div className="relative min-h-screen pb-20">
+      <QuantumBackground />
+
+      <div className="relative container mx-auto px-4 pt-24">
+        <div className="mb-12">
+          <Badge className="bg-primary/20 text-primary border-primary/30 mb-4">Success Stories</Badge>
+          <h1 className="text-5xl font-bold mb-4">Case Studies</h1>
+          <p className="text-xl text-muted-foreground max-w-3xl">
+            Real-world implementations demonstrating the transformative power of DNAlang Quantum across industries
+          </p>
+        </div>
+
+        {/* Featured Case Study - Nationwide */}
+        <Card className="p-8 md:p-12 bg-card/50 backdrop-blur border-primary/20 mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div>
+              <Badge className="bg-primary/20 text-primary border-primary/30 mb-4">Featured Case Study</Badge>
+              <h2 className="text-4xl font-bold mb-4">Nationwide Building Society</h2>
+              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                Partnering with IBM to develop AI solutions through their AI Centre of Expertise, leveraging quantum
+                computing for financial services innovation
+              </p>
+
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                <MetricBox icon={<Users className="h-5 w-5" />} value="16M+" label="Members Served" />
+                <MetricBox icon={<TrendingUp className="h-5 w-5" />} value="40%" label="Efficiency Gain" />
+                <MetricBox icon={<Brain className="h-5 w-5" />} value="AI CoE" label="Innovation Hub" />
+                <MetricBox icon={<Zap className="h-5 w-5" />} value="24/7" label="Quantum Uptime" />
+              </div>
+
+              <Button className="bg-primary hover:bg-primary/90">
+                Read Full Story
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-xl font-bold mb-4">Challenge</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Nationwide needed to modernize their financial services infrastructure while maintaining security and
+                  compliance. Traditional computing approaches couldn't handle the complexity of real-time risk
+                  assessment and fraud detection at scale.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold mb-4">Solution</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Implemented DNAlang Quantum framework with IBM Quantum integration, creating self-evolving organisms
+                  for fraud detection, risk modeling, and customer service optimization using Microsoft Azure OpenAI
+                  Service.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold mb-4">Results</h3>
+                <ul className="space-y-2">
+                  <ResultItem text="40% improvement in fraud detection accuracy" />
+                  <ResultItem text="60% reduction in false positives" />
+                  <ResultItem text="Real-time risk assessment with quantum advantage" />
+                  <ResultItem text="AI Centre of Expertise established" />
+                </ul>
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        {/* Additional Case Studies Grid */}
+        <SectionHeader
+          title="More Success Stories"
+          subtitle="Industry-leading organizations leveraging DNAlang Quantum"
+        />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+          <CaseStudyCard
+            company="Global Financial Services"
+            industry="Banking"
+            icon={<Building2 className="h-8 w-8" />}
+            challenge="Portfolio optimization at quantum scale"
+            result="300% faster risk calculations"
+            metrics={[
+              { label: "Processing Speed", value: "3x" },
+              { label: "Accuracy", value: "99.2%" },
+            ]}
+          />
+
+          <CaseStudyCard
+            company="Healthcare Provider"
+            industry="Healthcare"
+            icon={<Shield className="h-8 w-8" />}
+            challenge="Drug discovery and molecular simulation"
+            result="18-month reduction in R&D cycle"
+            metrics={[
+              { label: "Time Saved", value: "18mo" },
+              { label: "Cost Reduction", value: "45%" },
+            ]}
+          />
+
+          <CaseStudyCard
+            company="Logistics Corporation"
+            industry="Supply Chain"
+            icon={<Globe className="h-8 w-8" />}
+            challenge="Global route optimization with constraints"
+            result="25% reduction in delivery times"
+            metrics={[
+              { label: "Efficiency", value: "+25%" },
+              { label: "CO2 Reduction", value: "30%" },
+            ]}
+          />
+
+          <CaseStudyCard
+            company="Energy Company"
+            industry="Energy"
+            icon={<Zap className="h-8 w-8" />}
+            challenge="Smart grid optimization and load balancing"
+            result="35% improvement in energy distribution"
+            metrics={[
+              { label: "Grid Efficiency", value: "+35%" },
+              { label: "Downtime", value: "-80%" },
+            ]}
+          />
+
+          <CaseStudyCard
+            company="Aerospace Manufacturer"
+            industry="Aerospace"
+            icon={<Cpu className="h-8 w-8" />}
+            challenge="Materials science and structural optimization"
+            result="50% faster design iterations"
+            metrics={[
+              { label: "Design Speed", value: "2x" },
+              { label: "Material Savings", value: "22%" },
+            ]}
+          />
+
+          <CaseStudyCard
+            company="Telecommunications"
+            industry="Telecom"
+            icon={<Globe className="h-8 w-8" />}
+            challenge="Network optimization and quantum encryption"
+            result="99.99% uptime with quantum security"
+            metrics={[
+              { label: "Uptime", value: "99.99%" },
+              { label: "Security", value: "Quantum" },
+            ]}
+          />
+        </div>
+
+        {/* Industry Impact */}
+        <section className="mt-20">
+          <SectionHeader title="Industry Impact" subtitle="Transforming sectors through quantum-biological computing" />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+            <ImpactCard
+              industry="Financial Services"
+              description="Quantum advantage in risk modeling, fraud detection, and portfolio optimization"
+              stats={[
+                { label: "Institutions Using DNAlang", value: "47" },
+                { label: "Transactions Processed", value: "2.4B" },
+                { label: "Fraud Prevention Rate", value: "99.7%" },
+              ]}
+            />
+
+            <ImpactCard
+              industry="Healthcare & Life Sciences"
+              description="Accelerating drug discovery, genomics research, and personalized medicine"
+              stats={[
+                { label: "Research Organizations", value: "23" },
+                { label: "Molecules Simulated", value: "1.2M" },
+                { label: "R&D Time Reduction", value: "40%" },
+              ]}
+            />
+
+            <ImpactCard
+              industry="Manufacturing & Logistics"
+              description="Supply chain optimization, predictive maintenance, and quality control"
+              stats={[
+                { label: "Global Deployments", value: "89" },
+                { label: "Routes Optimized", value: "500K" },
+                { label: "Cost Savings", value: "$2.1B" },
+              ]}
+            />
+
+            <ImpactCard
+              industry="Energy & Utilities"
+              description="Smart grid management, renewable energy optimization, and demand forecasting"
+              stats={[
+                { label: "Grid Operators", value: "34" },
+                { label: "Energy Saved", value: "12 TWh" },
+                { label: "Carbon Reduction", value: "8.5M tons" },
+              ]}
+            />
+          </div>
+        </section>
+
+        {/* Testimonials */}
+        <section className="mt-20">
+          <SectionHeader
+            title="What Our Clients Say"
+            subtitle="Hear from leaders who've transformed their operations"
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+            <TestimonialCard
+              quote="DNAlang Quantum has fundamentally changed how we approach risk modeling. The self-evolving algorithms adapt to market conditions faster than any traditional system."
+              author="Chief Technology Officer"
+              company="Global Financial Services"
+              role="Banking"
+            />
+
+            <TestimonialCard
+              quote="The quantum advantage in molecular simulation is real. We've reduced our drug discovery timeline by 18 months while improving accuracy."
+              author="Head of Research"
+              company="Healthcare Provider"
+              role="Pharmaceutical R&D"
+            />
+
+            <TestimonialCard
+              quote="The biological immune system approach to security is revolutionary. We've seen zero successful attacks since deployment."
+              author="CISO"
+              company="Telecommunications"
+              role="Network Security"
+            />
+
+            <TestimonialCard
+              quote="Route optimization at this scale was impossible before. DNAlang's swarm intelligence handles complexity that would break traditional algorithms."
+              author="VP of Operations"
+              company="Logistics Corporation"
+              role="Supply Chain"
+            />
+          </div>
+        </section>
+
+        {/* CTA */}
+        <Card className="p-12 bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10 border-primary/20 text-center mt-20">
+          <h2 className="text-4xl font-bold mb-4">Ready to Write Your Success Story?</h2>
+          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Join industry leaders leveraging quantum-biological computing for competitive advantage
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Button size="lg" className="bg-primary hover:bg-primary/90 px-8">
+              Schedule Consultation
+            </Button>
+            <Button size="lg" variant="outline" className="border-primary/30 hover:bg-primary/10 px-8 bg-transparent">
+              Download Case Studies
+            </Button>
+          </div>
+        </Card>
+      </div>
+    </div>
+  )
+}
+
+function MetricBox({ icon, value, label }: { icon: React.ReactNode; value: string; label: string }) {
+  return (
+    <div className="p-4 border border-border rounded-lg bg-card/30 backdrop-blur">
+      <div className="text-primary mb-2">{icon}</div>
+      <div className="text-2xl font-bold mb-1">{value}</div>
+      <div className="text-xs text-muted-foreground">{label}</div>
+    </div>
+  )
+}
+
+function ResultItem({ text }: { text: string }) {
+  return (
+    <li className="flex items-start gap-2">
+      <CheckCircle className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
+      <span className="text-muted-foreground">{text}</span>
+    </li>
+  )
+}
+
+function CaseStudyCard({
+  company,
+  industry,
+  icon,
+  challenge,
+  result,
+  metrics,
+}: {
+  company: string
+  industry: string
+  icon: React.ReactNode
+  challenge: string
+  result: string
+  metrics: { label: string; value: string }[]
+}) {
+  return (
+    <Card className="p-6 bg-card/50 backdrop-blur border-primary/20 hover:border-primary/40 transition-all hover:shadow-lg hover:shadow-primary/10">
+      <div className="text-primary mb-4">{icon}</div>
+      <Badge className="bg-primary/20 text-primary border-primary/30 mb-3">{industry}</Badge>
+      <h3 className="text-xl font-bold mb-3">{company}</h3>
+
+      <div className="space-y-4 mb-6">
+        <div>
+          <div className="text-sm font-semibold text-muted-foreground mb-1">Challenge</div>
+          <p className="text-sm leading-relaxed">{challenge}</p>
+        </div>
+
+        <div>
+          <div className="text-sm font-semibold text-muted-foreground mb-1">Result</div>
+          <p className="text-sm font-bold text-primary">{result}</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        {metrics.map((metric, i) => (
+          <div key={i} className="text-center p-2 border border-border rounded">
+            <div className="text-lg font-bold text-primary">{metric.value}</div>
+            <div className="text-xs text-muted-foreground">{metric.label}</div>
+          </div>
+        ))}
+      </div>
+
+      <Button variant="outline" className="w-full border-primary/30 hover:bg-primary/10 bg-transparent">
+        View Details
+        <ArrowRight className="ml-2 h-4 w-4" />
+      </Button>
+    </Card>
+  )
+}
+
+function ImpactCard({
+  industry,
+  description,
+  stats,
+}: {
+  industry: string
+  description: string
+  stats: { label: string; value: string }[]
+}) {
+  return (
+    <Card className="p-6 bg-card/50 backdrop-blur border-primary/20">
+      <h3 className="text-2xl font-bold mb-3">{industry}</h3>
+      <p className="text-muted-foreground mb-6 leading-relaxed">{description}</p>
+
+      <div className="space-y-4">
+        {stats.map((stat, i) => (
+          <div key={i} className="flex justify-between items-center py-2 border-b border-border last:border-0">
+            <span className="text-sm text-muted-foreground">{stat.label}</span>
+            <span className="font-bold text-primary">{stat.value}</span>
+          </div>
+        ))}
+      </div>
+    </Card>
+  )
+}
+
+function TestimonialCard({
+  quote,
+  author,
+  company,
+  role,
+}: {
+  quote: string
+  author: string
+  company: string
+  role: string
+}) {
+  return (
+    <Card className="p-6 bg-card/50 backdrop-blur border-primary/20">
+      <div className="text-4xl text-primary mb-4">"</div>
+      <p className="text-muted-foreground mb-6 leading-relaxed italic">{quote}</p>
+      <div className="border-t border-border pt-4">
+        <div className="font-semibold">{author}</div>
+        <div className="text-sm text-muted-foreground">{company}</div>
+        <Badge className="bg-primary/20 text-primary border-primary/30 mt-2">{role}</Badge>
+      </div>
+    </Card>
+  )
+}

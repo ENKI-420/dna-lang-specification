@@ -1,0 +1,308 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dnalang-quantum
+  labels:
+    app: dnalang
+    environment: production
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: dnalang-catalog
+  namespace: openshift-marketplace
+spec:
+  sourceType: grpc
+  image: registry.redhat.io/dnalang/catalog:v2.0
+  displayName: DNA-Lang Quantum Operators
+  publisher: Red Hat DNA-Lang Team
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: dnalang-operator
+  namespace: openshift-operators
+spec:
+  channel: stable
+  name: dnalang-operator
+  source: dnalang-catalog
+  sourceNamespace: openshift-marketplace
+---
+apiVersion: dnalang.redhat.io/v1alpha1
+kind: QuantumOrganism
+metadata:
+  name: quantum-swarm-controller
+  namespace: dnalang-quantum
+spec:
+  # DNA Configuration
+  dna:
+    domain: "quantum_computing"
+    evolutionRate: 0.1
+    quantumTarget: "max_entanglement"
+    coherenceThreshold: 0.95
+    negentropyGoal: 0.99
+    
+  # Swarm Configuration
+  swarm:
+    size: 64
+    topology: "small_world"
+    consensusProtocol: "byzantine_fault_tolerant"
+    
+  # IBM Quantum Backend
+  quantumBackend:
+    provider: "ibm"
+    backend: "ibm_torino"
+    credentials:
+      secretRef:
+        name: ibm-quantum-credentials
+        key: api_token
+    
+  # Resource Requirements
+  resources:
+    requests:
+      cpu: "4"
+      memory: "8Gi"
+      nvidia.com/gpu: "2"
+    limits:
+      cpu: "16"
+      memory: "32Gi"
+      nvidia.com/gpu: "4"
+      
+  # Storage
+  storage:
+    quantumStateCache:
+      size: 100Gi
+      storageClass: fast-ssd
+    evolutionHistory:
+      size: 50Gi
+      storageClass: standard
+      
+  # Monitoring & Observability
+  monitoring:
+    enabled: true
+    prometheusEndpoint: "/metrics"
+    grafanaDashboard: true
+    quantumMetrics:
+      - coherenceTime
+      - fidelity
+      - entanglementEntropy
+      - wassersteinCost
+      
+  # Auto-scaling
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 100
+    metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 70
+      - type: Custom
+        custom:
+          metric:
+            name: quantum_job_queue_depth
+          target:
+            type: Value
+            value: "10"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dnalang-api
+  namespace: dnalang-quantum
+spec:
+  type: LoadBalancer
+  selector:
+    app: dnalang-organism
+  ports:
+    - name: organism-engine
+      port: 8080
+      targetPort: 8080
+    - name: cellular-fabric
+      port: 3001
+      targetPort: 3001
+    - name: iris-intent
+      port: 5000
+      targetPort: 5000
+    - name: quantum-gateway
+      port: 9000
+      targetPort: 9000
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: dnalang-console
+  namespace: dnalang-quantum
+spec:
+  host: dnalang.apps.quantum.redhat.io
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  to:
+    kind: Service
+    name: dnalang-api
+    weight: 100
+  port:
+    targetPort: 8080
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dnalang-config
+  namespace: dnalang-quantum
+data:
+  dnalang.yaml: |
+    runtime:
+      mode: hybrid_quantum_classical
+      quantum_backends:
+        - ibm_torino
+        - ibm_brisbane
+        - ibm_kyoto
+      simulators:
+        - qiskit_aer
+        - cirq
+        - pennylane
+      
+    evolution:
+      algorithm: genetic_programming
+      population_size: 1000
+      mutation_rate: 0.1
+      crossover_rate: 0.7
+      selection_method: tournament
+      elitism: 0.05
+      
+    cellular_fabric:
+      topology: hexagonal_lattice
+      width: 100
+      height: 100
+      update_rule: quantum_conway
+      quantum_probability: 0.01
+      
+    consciousness:
+      phi_threshold: 2.5
+      coherence_time_ms: 500
+      workspace_buffer_size: 7
+      attention_mechanism: softmax
+      
+    security:
+      encryption: quantum_key_distribution
+      protocol: bb84
+      key_length: 256
+      audit_retention_days: 90
+      
+    integrations:
+      redhat:
+        openshift_ai: enabled
+        ansible_automation: enabled
+        developer_hub: enabled
+        quay_registry: registry.redhat.io/dnalang
+      ibm:
+        quantum_network: enabled
+        qiskit_runtime: enabled
+        error_mitigation: complete
+      github:
+        copilot_integration: enabled
+        actions_workflow: enabled
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dnalang-init
+  namespace: dnalang-quantum
+spec:
+  template:
+    spec:
+      containers:
+      - name: init
+        image: registry.redhat.io/dnalang/init:v2.0
+        command: ["/bin/bash", "-c"]
+        args:
+          - |
+            # Initialize quantum swarm
+            dnalang swarm init --size 64 --topology small_world
+            
+            # Deploy initial organisms
+            dnalang organism create --from-file /config/genesis.dna
+            
+            # Configure IBM Quantum connection
+            dnalang quantum connect --provider ibm --backend ibm_torino
+            
+            # Start evolution engine
+            dnalang evolve start --generations 1000 --target max_entanglement
+            
+            # Enable monitoring
+            dnalang monitor enable --prometheus --grafana
+      restartPolicy: OnFailure
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ibm-quantum-credentials
+  namespace: dnalang-quantum
+type: Opaque
+data:
+  api_token: <base64_encoded_ibm_quantum_api_token>
+---
+apiVersion: devfile.io/v1alpha2
+kind: DevWorkspace
+metadata:
+  name: dnalang-dev-workspace
+  namespace: dnalang-quantum
+spec:
+  started: true
+  template:
+    components:
+      - name: dnalang-dev
+        container:
+          image: registry.redhat.io/dnalang/devspace:latest
+          memoryLimit: 16Gi
+          cpuLimit: "8"
+          mountSources: true
+          env:
+            - name: QUANTUM_BACKEND
+              value: ibm_torino
+            - name: EVOLUTION_MODE
+              value: adaptive
+            - name: WORKSPACE_TYPE
+              value: quantum_research
+          volumeMounts:
+            - name: quantum-cache
+              path: /quantum/cache
+      - name: vscode
+        container:
+          image: registry.redhat.io/devspaces/udi-rhel8:latest
+          memoryLimit: 8Gi
+          mountSources: true
+      - name: quantum-tools
+        container:
+          image: registry.redhat.io/dnalang/quantum-tools:latest
+          memoryLimit: 4Gi
+    projects:
+      - name: dnalang-core
+        git:
+          remotes:
+            origin: https://github.com/quantum-bio/dnalang
+    commands:
+      - id: build
+        exec:
+          component: dnalang-dev
+          commandLine: dnalang build --optimize --quantum
+      - id: test
+        exec:
+          component: dnalang-dev
+          commandLine: dnalang test --quantum-backend simulator
+      - id: deploy
+        exec:
+          component: dnalang-dev
+          commandLine: dnalang deploy --target openshift --namespace dnalang-quantum
+    events:
+      postStart:
+        - exec:
+            component: dnalang-dev
+            commandLine: |
+              echo "Initializing DNA-Lang Quantum Development Environment..."
+              dnalang doctor --check-all
+              dnalang swarm status

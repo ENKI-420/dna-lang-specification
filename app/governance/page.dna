@@ -1,0 +1,552 @@
+"use client"
+
+import { Navigation } from "@/components/navigation"
+import { SectionHeader } from "@/components/section-header"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  Building2,
+  Users,
+  Shield,
+  FileCheck,
+  Award,
+  Globe,
+  CheckCircle2,
+  TrendingUp,
+  Target,
+  Handshake,
+} from "lucide-react"
+
+export default function GovernancePage() {
+  const partners = [
+    {
+      name: "IBM",
+      type: "Strategic Technology Partner",
+      logo: Building2,
+      description: "Quantum computing hardware, AI/ML infrastructure, and enterprise consulting services",
+      contributions: ["IBM Quantum Access", "Watson AI Integration", "Enterprise Support", "Research Collaboration"],
+      tier: "Platinum",
+    },
+    {
+      name: "Red Hat",
+      type: "Infrastructure Partner",
+      logo: Building2,
+      description: "OpenShift platform, Kubernetes orchestration, and cloud-native infrastructure",
+      contributions: ["OpenShift Platform", "Ansible Automation", "Enterprise Linux", "Container Registry"],
+      tier: "Platinum",
+    },
+    {
+      name: "Nationwide Building Society",
+      type: "Enterprise Customer & Innovation Partner",
+      logo: Building2,
+      description: "Financial services innovation, AI adoption, and production deployment validation",
+      contributions: ["Production Workloads", "Use Case Development", "Feedback Loop", "Industry Advocacy"],
+      tier: "Gold",
+    },
+    {
+      name: "Technology Integrators",
+      type: "Implementation Partners",
+      logo: Users,
+      description: "System integration, custom development, and deployment services",
+      contributions: ["Custom Integration", "Training Services", "Technical Support", "Best Practices"],
+      tier: "Silver",
+    },
+  ]
+
+  const governanceFramework = [
+    {
+      category: "Technical Governance",
+      icon: FileCheck,
+      policies: [
+        {
+          name: "Architecture Review Board",
+          description: "Quarterly reviews of system architecture, technology decisions, and technical roadmap",
+          frequency: "Quarterly",
+          status: "Active",
+        },
+        {
+          name: "Code Quality Standards",
+          description: "Automated testing, code review processes, and quality gates for all releases",
+          frequency: "Continuous",
+          status: "Active",
+        },
+        {
+          name: "Performance Benchmarking",
+          description: "Regular performance testing against defined KPIs and competitive baselines",
+          frequency: "Monthly",
+          status: "Active",
+        },
+      ],
+    },
+    {
+      category: "Security & Compliance",
+      icon: Shield,
+      policies: [
+        {
+          name: "Security Audit Program",
+          description: "Third-party security audits, penetration testing, and vulnerability assessments",
+          frequency: "Bi-Annual",
+          status: "Active",
+        },
+        {
+          name: "Compliance Certification",
+          description: "SOC 2 Type II, ISO 27001, GDPR, and industry-specific compliance requirements",
+          frequency: "Annual",
+          status: "In Progress",
+        },
+        {
+          name: "Incident Response",
+          description: "24/7 security monitoring, incident response procedures, and breach notification protocols",
+          frequency: "Continuous",
+          status: "Active",
+        },
+      ],
+    },
+    {
+      category: "Data Governance",
+      icon: FileCheck,
+      policies: [
+        {
+          name: "Data Classification",
+          description: "Standardized data classification, handling procedures, and access controls",
+          frequency: "Continuous",
+          status: "Active",
+        },
+        {
+          name: "Privacy Protection",
+          description: "Data privacy policies, consent management, and right-to-erasure procedures",
+          frequency: "Continuous",
+          status: "Active",
+        },
+        {
+          name: "Data Retention",
+          description: "Automated data lifecycle management, archival, and secure deletion policies",
+          frequency: "Continuous",
+          status: "Active",
+        },
+      ],
+    },
+    {
+      category: "Operational Governance",
+      icon: Target,
+      policies: [
+        {
+          name: "Change Management",
+          description: "Formal change approval process, rollback procedures, and deployment windows",
+          frequency: "Per Release",
+          status: "Active",
+        },
+        {
+          name: "SLA Management",
+          description: "Service level agreements, uptime guarantees, and performance commitments",
+          frequency: "Continuous",
+          status: "Active",
+        },
+        {
+          name: "Capacity Planning",
+          description: "Resource forecasting, scaling strategies, and infrastructure optimization",
+          frequency: "Quarterly",
+          status: "Active",
+        },
+      ],
+    },
+  ]
+
+  const certifications = [
+    {
+      name: "SOC 2 Type II",
+      status: "In Progress",
+      expectedDate: "Q3 2025",
+      description: "Security, availability, and confidentiality controls",
+    },
+    {
+      name: "ISO 27001",
+      status: "Planned",
+      expectedDate: "Q4 2025",
+      description: "Information security management system",
+    },
+    {
+      name: "GDPR Compliance",
+      status: "Active",
+      expectedDate: "Completed",
+      description: "EU data protection regulation compliance",
+    },
+    {
+      name: "HIPAA Ready",
+      status: "Planned",
+      expectedDate: "Q1 2026",
+      description: "Healthcare data protection standards",
+    },
+    {
+      name: "FedRAMP",
+      status: "Planned",
+      expectedDate: "Q2 2026",
+      description: "Federal government cloud security",
+    },
+    {
+      name: "PCI DSS",
+      status: "Planned",
+      expectedDate: "Q4 2025",
+      description: "Payment card industry data security",
+    },
+  ]
+
+  const partnerProgram = {
+    tiers: [
+      {
+        name: "Platinum",
+        benefits: [
+          "Direct access to engineering team",
+          "Co-marketing opportunities",
+          "Priority feature requests",
+          "Dedicated account manager",
+          "Early access to new features",
+          "Joint go-to-market initiatives",
+        ],
+        requirements: ["Strategic technology contribution", "Multi-year commitment", "Executive sponsorship"],
+      },
+      {
+        name: "Gold",
+        benefits: [
+          "Technical support priority",
+          "Quarterly business reviews",
+          "Beta program access",
+          "Co-branded case studies",
+          "Training and certification",
+        ],
+        requirements: ["Production deployment", "Reference customer status", "Annual commitment"],
+      },
+      {
+        name: "Silver",
+        benefits: [
+          "Standard technical support",
+          "Partner portal access",
+          "Marketing materials",
+          "Community forum access",
+          "Documentation access",
+        ],
+        requirements: ["Certified implementation", "Active customer base", "Quarterly engagement"],
+      },
+    ],
+  }
+
+  const getTierColor = (tier: string) => {
+    switch (tier) {
+      case "Platinum":
+        return "bg-cyan-500/20 text-cyan-400 border-cyan-500/30"
+      case "Gold":
+        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
+      case "Silver":
+        return "bg-slate-500/20 text-slate-400 border-slate-500/30"
+      default:
+        return "bg-slate-500/20 text-slate-400 border-slate-500/30"
+    }
+  }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "Active":
+      case "Completed":
+        return "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
+      case "In Progress":
+        return "bg-cyan-500/20 text-cyan-400 border-cyan-500/30"
+      case "Planned":
+        return "bg-slate-500/20 text-slate-400 border-slate-500/30"
+      default:
+        return "bg-slate-500/20 text-slate-400 border-slate-500/30"
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-950">
+      <Navigation />
+
+      <main className="container mx-auto px-4 py-8">
+        <SectionHeader
+          title="Partner Ecosystem & Governance"
+          subtitle="Strategic partnerships, governance frameworks, and compliance standards"
+        />
+
+        <Tabs defaultValue="partners" className="mt-8">
+          <TabsList className="grid w-full grid-cols-4 bg-slate-900/50 border border-slate-800">
+            <TabsTrigger value="partners">Partner Ecosystem</TabsTrigger>
+            <TabsTrigger value="governance">Governance Framework</TabsTrigger>
+            <TabsTrigger value="compliance">Compliance & Certifications</TabsTrigger>
+            <TabsTrigger value="program">Partner Program</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="partners" className="mt-6">
+            <div className="grid gap-6">
+              {partners.map((partner, idx) => {
+                const Logo = partner.logo
+                return (
+                  <Card
+                    key={idx}
+                    className="bg-slate-900/50 border-slate-800 hover:border-cyan-500/50 transition-colors"
+                  >
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-4">
+                          <div className="p-3 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
+                            <Logo className="h-8 w-8 text-cyan-400" />
+                          </div>
+                          <div>
+                            <CardTitle className="text-xl">{partner.name}</CardTitle>
+                            <CardDescription className="text-base mt-1">{partner.type}</CardDescription>
+                          </div>
+                        </div>
+                        <Badge className={getTierColor(partner.tier)}>{partner.tier} Partner</Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-slate-400 mb-4">{partner.description}</p>
+                      <div>
+                        <h4 className="font-semibold text-slate-200 mb-2">Key Contributions</h4>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                          {partner.contributions.map((contribution, cidx) => (
+                            <div
+                              key={cidx}
+                              className="flex items-center gap-2 p-2 rounded bg-slate-800/50 border border-slate-700/50"
+                            >
+                              <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
+                              <span className="text-sm text-slate-300">{contribution}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )
+              })}
+            </div>
+
+            <Card className="mt-6 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-cyan-500/30">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Handshake className="h-6 w-6 text-cyan-400" />
+                  Partnership Value Proposition
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className="h-5 w-5 text-emerald-400" />
+                      <h4 className="font-semibold text-slate-200">Market Growth</h4>
+                    </div>
+                    <p className="text-sm text-slate-400">
+                      Access to rapidly growing quantum computing market projected to reach $65B by 2030
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Award className="h-5 w-5 text-cyan-400" />
+                      <h4 className="font-semibold text-slate-200">Innovation Leadership</h4>
+                    </div>
+                    <p className="text-sm text-slate-400">
+                      Position as quantum computing pioneer with cutting-edge biological computing paradigms
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Globe className="h-5 w-5 text-purple-400" />
+                      <h4 className="font-semibold text-slate-200">Global Reach</h4>
+                    </div>
+                    <p className="text-sm text-slate-400">
+                      Leverage IBM and Red Hat's global presence across 175+ countries and enterprise customer base
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="governance" className="mt-6">
+            <div className="grid gap-6">
+              {governanceFramework.map((framework, idx) => {
+                const Icon = framework.icon
+                return (
+                  <Card key={idx} className="bg-slate-900/50 border-slate-800">
+                    <CardHeader>
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-lg bg-purple-500/10 border border-purple-500/30">
+                          <Icon className="h-6 w-6 text-purple-400" />
+                        </div>
+                        <CardTitle className="text-xl">{framework.category}</CardTitle>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {framework.policies.map((policy, pidx) => (
+                          <div
+                            key={pidx}
+                            className="p-4 rounded-lg bg-slate-800/50 border border-slate-700/50 hover:border-purple-500/50 transition-colors"
+                          >
+                            <div className="flex items-start justify-between mb-2">
+                              <h4 className="font-semibold text-slate-200">{policy.name}</h4>
+                              <div className="flex gap-2">
+                                <Badge variant="outline" className="text-xs border-slate-600 text-slate-400">
+                                  {policy.frequency}
+                                </Badge>
+                                <Badge variant="outline" className={`text-xs ${getStatusColor(policy.status)}`}>
+                                  {policy.status}
+                                </Badge>
+                              </div>
+                            </div>
+                            <p className="text-sm text-slate-400">{policy.description}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )
+              })}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="compliance" className="mt-6">
+            <div className="grid gap-6 md:grid-cols-2">
+              {certifications.map((cert, idx) => (
+                <Card key={idx} className="bg-slate-900/50 border-slate-800 hover:border-cyan-500/50 transition-colors">
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <CardTitle className="text-lg">{cert.name}</CardTitle>
+                        <CardDescription className="mt-1">{cert.description}</CardDescription>
+                      </div>
+                      <Badge className={getStatusColor(cert.status)}>{cert.status}</Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center gap-2 text-sm text-slate-400">
+                      <Award className="h-4 w-4 text-cyan-400" />
+                      <span>Expected: {cert.expectedDate}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <Card className="mt-6 bg-slate-900/50 border-slate-800">
+              <CardHeader>
+                <CardTitle>Compliance Roadmap</CardTitle>
+                <CardDescription>
+                  Strategic approach to industry certifications and regulatory compliance
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="p-4 rounded-lg bg-slate-800/50 border border-slate-700/50">
+                    <h4 className="font-semibold text-slate-200 mb-2">2025 Priorities</h4>
+                    <ul className="space-y-2 text-sm text-slate-400">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="h-4 w-4 text-cyan-400 mt-0.5 flex-shrink-0" />
+                        <span>Complete SOC 2 Type II audit and certification</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="h-4 w-4 text-cyan-400 mt-0.5 flex-shrink-0" />
+                        <span>Achieve ISO 27001 information security certification</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="h-4 w-4 text-cyan-400 mt-0.5 flex-shrink-0" />
+                        <span>Implement PCI DSS controls for payment processing</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="p-4 rounded-lg bg-slate-800/50 border border-slate-700/50">
+                    <h4 className="font-semibold text-slate-200 mb-2">2026 Expansion</h4>
+                    <ul className="space-y-2 text-sm text-slate-400">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="h-4 w-4 text-slate-600 mt-0.5 flex-shrink-0" />
+                        <span>Pursue FedRAMP authorization for government cloud services</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="h-4 w-4 text-slate-600 mt-0.5 flex-shrink-0" />
+                        <span>Obtain HIPAA compliance for healthcare applications</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="h-4 w-4 text-slate-600 mt-0.5 flex-shrink-0" />
+                        <span>Expand to industry-specific certifications (financial services, energy)</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="program" className="mt-6">
+            <div className="grid gap-6">
+              {partnerProgram.tiers.map((tier, idx) => (
+                <Card key={idx} className="bg-slate-900/50 border-slate-800">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-2xl">{tier.name} Tier</CardTitle>
+                      <Badge className={getTierColor(tier.name)}>{tier.name}</Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <h4 className="font-semibold text-slate-200 mb-3">Benefits</h4>
+                        <ul className="space-y-2">
+                          {tier.benefits.map((benefit, bidx) => (
+                            <li key={bidx} className="flex items-start gap-2 text-sm text-slate-400">
+                              <CheckCircle2 className="h-4 w-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                              <span>{benefit}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-slate-200 mb-3">Requirements</h4>
+                        <ul className="space-y-2">
+                          {tier.requirements.map((requirement, ridx) => (
+                            <li key={ridx} className="flex items-start gap-2 text-sm text-slate-400">
+                              <Target className="h-4 w-4 text-cyan-400 mt-0.5 flex-shrink-0" />
+                              <span>{requirement}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <Card className="mt-6 bg-gradient-to-r from-purple-500/10 to-cyan-500/10 border-purple-500/30">
+              <CardHeader>
+                <CardTitle>Become a Partner</CardTitle>
+                <CardDescription>Join the DNA-Lang Quantum ecosystem and shape the future of computing</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <div className="p-4 rounded-lg bg-slate-900/50 border border-slate-800">
+                    <h4 className="font-semibold text-cyan-400 mb-2">Technology Partners</h4>
+                    <p className="text-sm text-slate-400">
+                      Integrate your technology with DNA-Lang platform and co-develop innovative solutions
+                    </p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-slate-900/50 border border-slate-800">
+                    <h4 className="font-semibold text-purple-400 mb-2">Implementation Partners</h4>
+                    <p className="text-sm text-slate-400">
+                      Deliver DNA-Lang solutions to customers with certified expertise and support
+                    </p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-slate-900/50 border border-slate-800">
+                    <h4 className="font-semibold text-emerald-400 mb-2">Research Partners</h4>
+                    <p className="text-sm text-slate-400">
+                      Collaborate on quantum computing research and advance the state of the art
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </main>
+    </div>
+  )
+}

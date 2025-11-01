@@ -1,0 +1,593 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dnalang-system
+  labels:
+    app.kubernetes.io/name: dnalang
+    app.kubernetes.io/part-of: quantum-platform
+    openshift.io/cluster-monitoring: "true"
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: quantumorganisms.dnalang.openshift.io
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.11.1
+spec:
+  group: dnalang.openshift.io
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        description: QuantumOrganism is the Schema for the quantumorganisms API
+        type: object
+        properties:
+          apiVersion:
+            type: string
+          kind:
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: QuantumOrganismSpec defines the desired state of QuantumOrganism
+            type: object
+            properties:
+              dna:
+                description: DNA configuration for the organism
+                type: object
+                properties:
+                  domain:
+                    type: string
+                    enum: ["quantum_computing", "quantum_optimization", "quantum_simulation", "hybrid_quantum"]
+                  version:
+                    type: string
+                    pattern: '^v\d+\.\d+\.\d+$'
+                  evolutionRate:
+                    type: number
+                    minimum: 0
+                    maximum: 1
+                  mutationProbability:
+                    type: number
+                    minimum: 0
+                    maximum: 1
+                  fitnessThreshold:
+                    type: number
+                    minimum: 0
+                    maximum: 1
+                  consciousnessTarget:
+                    type: number
+                    minimum: 0
+                    maximum: 1
+                  quantumBackend:
+                    type: string
+                    enum: ["ibm_quantum", "aws_braket", "azure_quantum", "simulator"]
+                  compliance:
+                    type: array
+                    items:
+                      type: string
+                      enum: ["FIPS140-2", "FedRAMP", "SOC2", "ISO27001", "HIPAA", "GDPR"]
+                required:
+                - domain
+                - version
+                - evolutionRate
+              replicas:
+                type: integer
+                minimum: 1
+                maximum: 100
+                default: 1
+              resources:
+                type: object
+                properties:
+                  requests:
+                    type: object
+                    properties:
+                      cpu:
+                        type: string
+                        pattern: '^[0-9]+m?$'
+                      memory:
+                        type: string
+                        pattern: '^[0-9]+[KMGT]i$'
+                      gpu:
+                        type: string
+                        pattern: '^[0-9]+$'
+                  limits:
+                    type: object
+                    properties:
+                      cpu:
+                        type: string
+                        pattern: '^[0-9]+m?$'
+                      memory:
+                        type: string
+                        pattern: '^[0-9]+[KMGT]i$'
+                      gpu:
+                        type: string
+                        pattern: '^[0-9]+$'
+              monitoring:
+                type: boolean
+                default: true
+              autoscaling:
+                type: object
+                properties:
+                  enabled:
+                    type: boolean
+                    default: false
+                  minReplicas:
+                    type: integer
+                    minimum: 1
+                  maxReplicas:
+                    type: integer
+                    maximum: 100
+                  targetCPUUtilization:
+                    type: integer
+                    minimum: 1
+                    maximum: 100
+                  targetMemoryUtilization:
+                    type: integer
+                    minimum: 1
+                    maximum: 100
+              serviceMesh:
+                type: object
+                properties:
+                  enabled:
+                    type: boolean
+                    default: true
+                  istioInjection:
+                    type: boolean
+                    default: true
+                  mtls:
+                    type: boolean
+                    default: true
+              gitOps:
+                type: object
+                properties:
+                  enabled:
+                    type: boolean
+                    default: false
+                  repository:
+                    type: string
+                  branch:
+                    type: string
+                    default: main
+                  path:
+                    type: string
+                  syncPolicy:
+                    type: string
+                    enum: ["manual", "automated"]
+            required:
+            - dna
+          status:
+            description: QuantumOrganismStatus defines the observed state of QuantumOrganism
+            type: object
+            properties:
+              phase:
+                type: string
+                enum: ["Initializing", "Running", "Evolving", "Transcended", "Failed", "Terminating"]
+              generation:
+                type: integer
+              fitness:
+                type: number
+              consciousness:
+                type: number
+              lastEvolution:
+                type: string
+                format: date-time
+              quantumMetrics:
+                type: object
+                properties:
+                  coherenceTime:
+                    type: number
+                  fidelity:
+                    type: number
+                  entanglementEntropy:
+                    type: number
+                  circuitDepth:
+                    type: integer
+                  errorRate:
+                    type: number
+              conditions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                    status:
+                      type: string
+                    lastTransitionTime:
+                      type: string
+                      format: date-time
+                    reason:
+                      type: string
+                    message:
+                      type: string
+              observedGeneration:
+                type: integer
+              readyReplicas:
+                type: integer
+              availableReplicas:
+                type: integer
+    subresources:
+      status: {}
+      scale:
+        specReplicasPath: .spec.replicas
+        statusReplicasPath: .status.readyReplicas
+  scope: Namespaced
+  names:
+    plural: quantumorganisms
+    singular: quantumorganism
+    kind: QuantumOrganism
+    shortNames:
+    - qo
+    - organism
+    categories:
+    - all
+    - dnalang
+    - quantum
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: dnalang-operator
+  namespace: dnalang-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: dnalang-operator
+rules:
+- apiGroups:
+  - dnalang.openshift.io
+  resources:
+  - quantumorganisms
+  - quantumorganisms/status
+  - quantumorganisms/scale
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  - statefulsets
+  - daemonsets
+  - replicasets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - services
+  - configmaps
+  - secrets
+  - persistentvolumeclaims
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  - cronjobs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - autoscaling
+  resources:
+  - horizontalpodautoscalers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - monitoring.coreos.com
+  resources:
+  - servicemonitors
+  - prometheusrules
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - networking.istio.io
+  resources:
+  - virtualservices
+  - destinationrules
+  - gateways
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - security.istio.io
+  resources:
+  - authorizationpolicies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: dnalang-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: dnalang-operator
+subjects:
+- kind: ServiceAccount
+  name: dnalang-operator
+  namespace: dnalang-system
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dnalang-operator
+  namespace: dnalang-system
+  labels:
+    app.kubernetes.io/name: dnalang-operator
+    app.kubernetes.io/part-of: quantum-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dnalang-operator
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dnalang-operator
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+    spec:
+      serviceAccountName: dnalang-operator
+      containers:
+      - name: manager
+        image: registry.redhat.io/dnalang/operator:v3.0.0
+        imagePullPolicy: Always
+        command:
+        - /manager
+        args:
+        - --leader-elect
+        - --metrics-addr=:8080
+        - --probe-addr=:8081
+        env:
+        - name: WATCH_NAMESPACE
+          value: ""  # Watch all namespaces
+        - name: OPERATOR_NAME
+          value: "dnalang-operator"
+        - name: RELATED_IMAGE_ORGANISM
+          value: "registry.redhat.io/dnalang/organism:v3.0.0"
+        - name: RELATED_IMAGE_EVOLUTION_ENGINE
+          value: "registry.redhat.io/dnalang/evolution-engine:v3.0.0"
+        - name: RELATED_IMAGE_QUANTUM_RUNTIME
+          value: "registry.redhat.io/dnalang/quantum-runtime:v3.0.0"
+        ports:
+        - containerPort: 8080
+          name: metrics
+        - containerPort: 8081
+          name: health
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: health
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: health
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          capabilities:
+            drop:
+            - ALL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dnalang-operator-metrics
+  namespace: dnalang-system
+  labels:
+    app.kubernetes.io/name: dnalang-operator
+spec:
+  ports:
+  - name: metrics
+    port: 8080
+    targetPort: metrics
+  selector:
+    app.kubernetes.io/name: dnalang-operator
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: dnalang-operator
+  namespace: dnalang-system
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dnalang-operator
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  name: dnalang-operator.v3.0.0
+  namespace: dnalang-system
+  annotations:
+    alm-examples: |
+      [
+        {
+          "apiVersion": "dnalang.openshift.io/v1alpha1",
+          "kind": "QuantumOrganism",
+          "metadata": {
+            "name": "example-organism"
+          },
+          "spec": {
+            "dna": {
+              "domain": "quantum_computing",
+              "version": "v3.0.0",
+              "evolutionRate": 0.15,
+              "mutationProbability": 0.1,
+              "fitnessThreshold": 0.95,
+              "consciousnessTarget": 0.98,
+              "quantumBackend": "ibm_quantum"
+            },
+            "replicas": 3,
+            "resources": {
+              "requests": {
+                "cpu": "2",
+                "memory": "8Gi"
+              },
+              "limits": {
+                "cpu": "4",
+                "memory": "16Gi",
+                "gpu": "2"
+              }
+            },
+            "monitoring": true,
+            "autoscaling": {
+              "enabled": true,
+              "minReplicas": 3,
+              "maxReplicas": 10,
+              "targetCPUUtilization": 70
+            }
+          }
+        }
+      ]
+    categories: "AI/Machine Learning,Developer Tools"
+    certified: "true"
+    createdAt: "2025-10-30T12:00:00Z"
+    description: "DNA-Lang brings quantum-biological programming to Red Hat OpenShift"
+    containerImage: "registry.redhat.io/dnalang/operator:v3.0.0"
+    support: "Red Hat"
+    repository: "https://github.com/redhat/dnalang-operator"
+spec:
+  displayName: DNA-Lang Quantum Platform
+  description: |
+    ## DNA-Lang Quantum Platform for Red Hat OpenShift
+
+    DNA-Lang is a revolutionary quantum-biological programming language that models software as living organisms. 
+    Each program is an autonomous digital organism that can evolve, adapt, and self-manage its infrastructure on OpenShift.
+
+    ### Features
+    * **Self-Evolving Code**: Programs mutate and improve based on environmental feedback
+    * **Quantum Computing Integration**: Native support for IBM Quantum, AWS Braket, and Azure Quantum
+    * **OpenShift Native**: Deep integration with OpenShift Service Mesh, Serverless, and GitOps
+    * **Ansible Automation**: Full automation support via Red Hat Ansible Automation Platform
+    * **Enterprise Security**: FIPS 140-2, FedRAMP, and SOC2 compliance
+
+    ### Getting Started
+    1. Install the DNA-Lang Operator from OperatorHub
+    2. Create a QuantumOrganism custom resource
+    3. Watch your organism evolve and optimize
+
+  maturity: alpha
+  version: 3.0.0
+  replaces: dnalang-operator.v2.0.0
+  minKubeVersion: 1.24.0
+  provider:
+    name: Red Hat
+    url: https://redhat.com
+  maintainers:
+  - email: dnalang@redhat.com
+    name: DNA-Lang Team
+  links:
+  - name: Documentation
+    url: https://docs.dnalang.io
+  - name: GitHub
+    url: https://github.com/redhat/dnalang-operator
+  icon:
+  - base64data: ""  # Base64 encoded icon would go here
+    mediatype: image/png
+  installModes:
+  - supported: true
+    type: OwnNamespace
+  - supported: true
+    type: SingleNamespace
+  - supported: true
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  install:
+    strategy: deployment
+    spec:
+      deployments:
+      - name: dnalang-operator
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              app.kubernetes.io/name: dnalang-operator
+          template:
+            metadata:
+              labels:
+                app.kubernetes.io/name: dnalang-operator
+            spec:
+              serviceAccountName: dnalang-operator
+              containers:
+              - name: manager
+                image: registry.redhat.io/dnalang/operator:v3.0.0
+                imagePullPolicy: Always
+  customresourcedefinitions:
+    owned:
+    - name: quantumorganisms.dnalang.openshift.io
+      version: v1alpha1
+      kind: QuantumOrganism
+      displayName: Quantum Organism
+      description: Represents a self-evolving quantum program

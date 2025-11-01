@@ -1,0 +1,175 @@
+"use client"
+
+import { useState } from "react"
+import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Play, Copy, Check } from "lucide-react"
+
+const EXAMPLE_CODE = `organism QuantumSearch {
+  genome {
+    gene search_space = encode(database) -> qubits[8];
+    gene target_pattern = encode(query) -> qubits[4];
+  }
+  
+  quantum_state {
+    state superposition = superpose(|0>, |1>);
+    entangle(q[0], q[1]);
+    entangle(q[2], q[3]);
+    measure(q[0]) -> result;
+  }
+  
+  fitness = quantum_fidelity * search_accuracy;
+}`
+
+export default function PlaygroundPage() {
+  const [code, setCode] = useState(EXAMPLE_CODE)
+  const [output, setOutput] = useState<any>(null)
+  const [isCompiling, setIsCompiling] = useState(false)
+  const [copied, setCopied] = useState(false)
+
+  const handleCompile = async () => {
+    setIsCompiling(true)
+    try {
+      const response = await fetch("/api/compile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      })
+      const result = await response.json()
+      setOutput(result)
+    } catch (error) {
+      setOutput({ success: false, error: "Failed to compile" })
+    }
+    setIsCompiling(false)
+  }
+
+  const handleCopy = () => {
+    if (output?.qiskit_code) {
+      navigator.clipboard.writeText(output.qiskit_code)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-cyan-950 to-slate-950 p-8">
+      <div className="max-w-7xl mx-auto space-y-6">
+        <div className="text-center space-y-2">
+          <h1 className="text-4xl font-bold text-cyan-400">DNA-Lang Quantum Playground</h1>
+          <p className="text-slate-400">Write living software that evolves and adapts</p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Editor */}
+          <Card className="bg-slate-900/50 border-cyan-500/20 p-6">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold text-cyan-400">DNA-Lang Source</h2>
+                <Button onClick={handleCompile} disabled={isCompiling} className="bg-cyan-600 hover:bg-cyan-700">
+                  <Play className="w-4 h-4 mr-2" />
+                  {isCompiling ? "Compiling..." : "Compile"}
+                </Button>
+              </div>
+
+              <textarea
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                className="w-full h-[500px] bg-slate-950 text-cyan-100 font-mono text-sm p-4 rounded border border-cyan-500/30 focus:border-cyan-500 focus:outline-none resize-none"
+                spellCheck={false}
+              />
+            </div>
+          </Card>
+
+          {/* Output */}
+          <Card className="bg-slate-900/50 border-cyan-500/20 p-6">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold text-emerald-400">Compilation Output</h2>
+                {output?.success && (
+                  <Button
+                    onClick={handleCopy}
+                    variant="outline"
+                    size="sm"
+                    className="border-emerald-500/30 bg-transparent"
+                  >
+                    {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  </Button>
+                )}
+              </div>
+
+              {!output && (
+                <div className="h-[500px] flex items-center justify-center text-slate-500">
+                  Click "Compile" to see the generated Qiskit code
+                </div>
+              )}
+
+              {output && (
+                <Tabs defaultValue="qiskit" className="w-full">
+                  <TabsList className="bg-slate-800">
+                    <TabsTrigger value="qiskit">Qiskit Code</TabsTrigger>
+                    <TabsTrigger value="ast">AST</TabsTrigger>
+                    <TabsTrigger value="tokens">Tokens</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="qiskit" className="mt-4">
+                    {output.success ? (
+                      <pre className="bg-slate-950 text-emerald-100 font-mono text-sm p-4 rounded border border-emerald-500/30 h-[450px] overflow-auto">
+                        {output.qiskit_code}
+                      </pre>
+                    ) : (
+                      <div className="bg-red-950/50 text-red-400 p-4 rounded border border-red-500/30">
+                        <p className="font-semibold">{output.error_type}</p>
+                        <p className="text-sm mt-2">{output.error}</p>
+                      </div>
+                    )}
+                  </TabsContent>
+
+                  <TabsContent value="ast" className="mt-4">
+                    <pre className="bg-slate-950 text-purple-100 font-mono text-sm p-4 rounded border border-purple-500/30 h-[450px] overflow-auto">
+                      {JSON.stringify(output.ast, null, 2)}
+                    </pre>
+                  </TabsContent>
+
+                  <TabsContent value="tokens" className="mt-4">
+                    <div className="bg-slate-950 p-4 rounded border border-cyan-500/30 h-[450px] overflow-auto">
+                      <div className="space-y-1">
+                        {output.tokens?.map((token: any, i: number) => (
+                          <div key={i} className="flex gap-4 text-sm font-mono">
+                            <span className="text-cyan-400 w-24">{token.type}</span>
+                            <span className="text-slate-400 w-12">L{token.line}</span>
+                            <span className="text-slate-300">{token.value}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              )}
+            </div>
+          </Card>
+        </div>
+
+        {/* Stats */}
+        {output?.success && (
+          <Card className="bg-slate-900/50 border-cyan-500/20 p-6">
+            <div className="grid grid-cols-3 gap-6 text-center">
+              <div>
+                <div className="text-3xl font-bold text-cyan-400">{output.num_qubits}</div>
+                <div className="text-sm text-slate-400">Qubits Required</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-emerald-400">{output.tokens?.length || 0}</div>
+                <div className="text-sm text-slate-400">Tokens Parsed</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-purple-400">{output.qiskit_code?.split("\n").length || 0}</div>
+                <div className="text-sm text-slate-400">Lines Generated</div>
+              </div>
+            </div>
+          </Card>
+        )}
+      </div>
+    </div>
+  )
+}

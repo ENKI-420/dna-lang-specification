@@ -1,0 +1,306 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { SectionHeader } from "@/components/section-header"
+import { StatCard } from "@/components/stat-card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Badge } from "@/components/ui/badge"
+import { Progress } from "@/components/ui/progress"
+import { Network, Zap, Shield, TrendingUp, Activity, Radio } from "lucide-react"
+
+export default function SwarmPage() {
+  const [activeAgents, setActiveAgents] = useState(64)
+  const [entanglementStrength, setEntanglementStrength] = useState(0.847)
+  const [consensusRate, setConsensusRate] = useState(0.923)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setEntanglementStrength((prev) => Math.max(0.7, Math.min(1, prev + (Math.random() - 0.5) * 0.05)))
+      setConsensusRate((prev) => Math.max(0.8, Math.min(1, prev + (Math.random() - 0.5) * 0.03)))
+    }, 3000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-8">
+        <SectionHeader
+          title="Multi-Agent Swarm Intelligence"
+          subtitle="Quantum-entangled distributed agent coordination with negentropic optimization"
+        />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <StatCard icon={Network} label="Active Agents" value={activeAgents.toString()} trend="neutral" />
+          <StatCard
+            icon={Zap}
+            label="Entanglement Strength"
+            value={entanglementStrength.toFixed(3)}
+            trend="up"
+            trendValue="+5.2%"
+          />
+          <StatCard
+            icon={Shield}
+            label="Byzantine Consensus"
+            value={`${(consensusRate * 100).toFixed(1)}%`}
+            trend="up"
+            trendValue="+1.8%"
+          />
+          <StatCard icon={TrendingUp} label="Swarm Fitness" value="0.912" trend="up" trendValue="+8.7%" />
+        </div>
+
+        <Tabs defaultValue="topology" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="topology">Network Topology</TabsTrigger>
+            <TabsTrigger value="entanglement">Quantum Entanglement</TabsTrigger>
+            <TabsTrigger value="federation">Multi-Swarm Federation</TabsTrigger>
+            <TabsTrigger value="fitness">Negentropic Fitness</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="topology" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Swarm Network Structure</CardTitle>
+                  <CardDescription>Small-world topology with quantum links</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-64 bg-gradient-to-br from-cyan-950/20 to-purple-950/20 rounded-lg flex items-center justify-center relative overflow-hidden">
+                    {Array.from({ length: 64 }, (_, i) => {
+                      const angle = (i / 64) * 2 * Math.PI
+                      const radius = 100
+                      const x = 50 + radius * Math.cos(angle) * 0.8
+                      const y = 50 + radius * Math.sin(angle) * 0.8
+                      return (
+                        <div
+                          key={i}
+                          className="absolute w-2 h-2 bg-cyan-400 rounded-full animate-pulse"
+                          style={{
+                            left: `${x}%`,
+                            top: `${y}%`,
+                            animationDelay: `${i * 50}ms`,
+                          }}
+                        />
+                      )
+                    })}
+                  </div>
+                  <div className="mt-4 grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Clustering Coefficient</p>
+                      <p className="text-xl font-bold text-cyan-400">0.742</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Average Path Length</p>
+                      <p className="text-xl font-bold text-purple-400">2.8</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Agent Types</CardTitle>
+                  <CardDescription>Specialized roles in the swarm</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {[
+                    { type: "LoadBalancer", count: 8, color: "cyan" },
+                    { type: "SecurityGuard", count: 12, color: "red" },
+                    { type: "QuantumOptimizer", count: 16, color: "purple" },
+                    { type: "DataCollector", count: 12, color: "emerald" },
+                    { type: "ConsensusValidator", count: 8, color: "yellow" },
+                    { type: "EvolutionEngine", count: 8, color: "orange" },
+                  ].map((agent) => (
+                    <div key={agent.type}>
+                      <div className="flex justify-between mb-2">
+                        <span className="text-sm font-medium">{agent.type}</span>
+                        <Badge className={`bg-${agent.color}-500`}>{agent.count}</Badge>
+                      </div>
+                      <Progress value={(agent.count / 64) * 100} className="h-2" />
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="entanglement" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Quantum Entanglement Optimization</CardTitle>
+                <CardDescription>Maximizing quantum correlations for instantaneous coordination</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="text-center p-6 bg-gradient-to-br from-cyan-950/30 to-cyan-900/20 rounded-lg">
+                    <Radio className="h-8 w-8 text-cyan-400 mx-auto mb-2" />
+                    <p className="text-sm text-muted-foreground mb-1">Entangled Pairs</p>
+                    <p className="text-3xl font-bold text-cyan-400">2,048</p>
+                  </div>
+                  <div className="text-center p-6 bg-gradient-to-br from-purple-950/30 to-purple-900/20 rounded-lg">
+                    <Activity className="h-8 w-8 text-purple-400 mx-auto mb-2" />
+                    <p className="text-sm text-muted-foreground mb-1">Bell State Fidelity</p>
+                    <p className="text-3xl font-bold text-purple-400">{(entanglementStrength * 100).toFixed(1)}%</p>
+                  </div>
+                  <div className="text-center p-6 bg-gradient-to-br from-emerald-950/30 to-emerald-900/20 rounded-lg">
+                    <Zap className="h-8 w-8 text-emerald-400 mx-auto mb-2" />
+                    <p className="text-sm text-muted-foreground mb-1">Teleportation Rate</p>
+                    <p className="text-3xl font-bold text-emerald-400">1.2 Gb/s</p>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-semibold text-lg mb-4">Entanglement Distribution</h3>
+                  <div className="space-y-3">
+                    {[
+                      { pair: "Agent 0 ↔ Agent 32", strength: 0.94, distance: "Long-range" },
+                      { pair: "Agent 1 ↔ Agent 33", strength: 0.89, distance: "Long-range" },
+                      { pair: "Agent 2 ↔ Agent 3", strength: 0.97, distance: "Short-range" },
+                      { pair: "Agent 4 ↔ Agent 5", strength: 0.92, distance: "Short-range" },
+                    ].map((ent, idx) => (
+                      <div key={idx} className="flex items-center justify-between p-3 bg-muted/30 rounded">
+                        <span className="text-sm font-mono">{ent.pair}</span>
+                        <div className="flex items-center gap-3">
+                          <Badge variant="outline">{ent.distance}</Badge>
+                          <span className="text-sm font-bold text-cyan-400">{ent.strength.toFixed(2)}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="federation" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Multi-Swarm Federation Protocols</CardTitle>
+                <CardDescription>Cross-swarm coordination and resource sharing</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {[
+                    { name: "Alpha Swarm", agents: 64, fitness: 0.912, role: "Primary" },
+                    { name: "Beta Swarm", agents: 48, fitness: 0.887, role: "Secondary" },
+                    { name: "Gamma Swarm", agents: 32, fitness: 0.854, role: "Tertiary" },
+                    { name: "Delta Swarm", agents: 56, fitness: 0.901, role: "Support" },
+                  ].map((swarm) => (
+                    <Card key={swarm.name} className="bg-muted/30">
+                      <CardHeader className="pb-3">
+                        <div className="flex justify-between items-start">
+                          <CardTitle className="text-base">{swarm.name}</CardTitle>
+                          <Badge>{swarm.role}</Badge>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">Active Agents</span>
+                          <span className="font-mono text-cyan-400">{swarm.agents}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">Swarm Fitness</span>
+                          <span className="font-mono text-emerald-400">{swarm.fitness.toFixed(3)}</span>
+                        </div>
+                        <Progress value={swarm.fitness * 100} className="h-2 mt-2" />
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+
+                <div className="mt-6">
+                  <h3 className="font-semibold text-lg mb-4">Federation Metrics</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <p className="text-sm text-muted-foreground mb-1">Total Agents</p>
+                      <p className="text-2xl font-bold text-cyan-400">200</p>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <p className="text-sm text-muted-foreground mb-1">Cross-Swarm Links</p>
+                      <p className="text-2xl font-bold text-purple-400">384</p>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <p className="text-sm text-muted-foreground mb-1">Consensus Time</p>
+                      <p className="text-2xl font-bold text-emerald-400">47ms</p>
+                    </div>
+                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                      <p className="text-sm text-muted-foreground mb-1">Federation Health</p>
+                      <p className="text-2xl font-bold text-yellow-400">98.2%</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="fitness" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Negentropic Fitness Landscapes</CardTitle>
+                <CardDescription>Entropy reduction and self-organization optimization</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="h-64 bg-gradient-to-br from-cyan-950/20 via-purple-950/20 to-emerald-950/20 rounded-lg p-6">
+                  <div className="h-full flex items-end justify-around gap-1">
+                    {Array.from({ length: 40 }, (_, i) => {
+                      const height = 20 + Math.sin(i * 0.3) * 30 + Math.cos(i * 0.5) * 20 + 30
+                      return (
+                        <div
+                          key={i}
+                          className="flex-1 bg-gradient-to-t from-cyan-500 via-purple-500 to-emerald-500 rounded-t opacity-80 hover:opacity-100 transition-opacity"
+                          style={{ height: `${height}%` }}
+                        />
+                      )
+                    })}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h3 className="font-semibold text-lg mb-4">Entropy Metrics</h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-sm">System Entropy</span>
+                        <span className="font-mono text-cyan-400">2.847 bits</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm">Negentropy Rate</span>
+                        <span className="font-mono text-emerald-400">-0.12 bits/s</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm">Self-Organization</span>
+                        <span className="font-mono text-purple-400">0.891</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm">Fitness Gradient</span>
+                        <span className="font-mono text-yellow-400">+0.034/gen</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold text-lg mb-4">Optimization Status</h3>
+                    <div className="space-y-3">
+                      {[
+                        { metric: "Local Optima Escaped", value: 12 },
+                        { metric: "Global Optimum Distance", value: 0.087 },
+                        { metric: "Exploration Rate", value: 0.23 },
+                        { metric: "Exploitation Rate", value: 0.77 },
+                      ].map((item) => (
+                        <div key={item.metric} className="flex justify-between">
+                          <span className="text-sm">{item.metric}</span>
+                          <span className="font-mono text-cyan-400">{item.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
+  )
+}

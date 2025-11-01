@@ -1,0 +1,660 @@
+"use client"
+
+import type React from "react"
+
+import { Card } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Progress } from "@/components/ui/progress"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { QuantumBackground } from "@/components/quantum-background"
+import {
+  Activity,
+  Brain,
+  Cpu,
+  Network,
+  Shield,
+  TrendingUp,
+  Zap,
+  AlertCircle,
+  CheckCircle,
+  Clock,
+  GitBranch,
+  Layers,
+} from "lucide-react"
+import { useState, useEffect } from "react"
+
+export default function DashboardPage() {
+  const [quantumCoherence, setQuantumCoherence] = useState(95.2)
+  const [consciousnessPhi, setConsciousnessPhi] = useState(2.8)
+  const [activeAgents, setActiveAgents] = useState(64)
+
+  // Simulate real-time updates
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setQuantumCoherence((prev) => Math.min(99, Math.max(90, prev + (Math.random() - 0.5) * 2)))
+      setConsciousnessPhi((prev) => Math.min(3.5, Math.max(2.0, prev + (Math.random() - 0.5) * 0.1)))
+      setActiveAgents((prev) => Math.min(64, Math.max(60, prev + Math.floor((Math.random() - 0.5) * 3))))
+    }, 3000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <div className="relative min-h-screen pb-20">
+      <QuantumBackground />
+
+      <div className="relative container mx-auto px-4 pt-24">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold mb-2">Strategy Dashboard</h1>
+          <p className="text-muted-foreground">Real-time monitoring of quantum-biological systems</p>
+        </div>
+
+        <Tabs defaultValue="overview" className="space-y-8">
+          <TabsList className="bg-card/50 backdrop-blur border border-primary/20">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="quantum">Quantum Metrics</TabsTrigger>
+            <TabsTrigger value="evolution">Evolution</TabsTrigger>
+            <TabsTrigger value="swarm">Swarm Intelligence</TabsTrigger>
+            <TabsTrigger value="security">Security</TabsTrigger>
+          </TabsList>
+
+          {/* Overview Tab */}
+          <TabsContent value="overview" className="space-y-8">
+            {/* Key Performance Indicators */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <KPICard
+                icon={<Cpu className="h-5 w-5" />}
+                label="Quantum Coherence"
+                value={`${quantumCoherence.toFixed(1)}%`}
+                target="95%"
+                status="optimal"
+                trend="+2.3%"
+              />
+              <KPICard
+                icon={<Brain className="h-5 w-5" />}
+                label="Consciousness Phi"
+                value={consciousnessPhi.toFixed(2)}
+                target="2.5"
+                status="optimal"
+                trend="+0.3"
+              />
+              <KPICard
+                icon={<Network className="h-5 w-5" />}
+                label="Active Agents"
+                value={activeAgents.toString()}
+                target="64"
+                status={activeAgents >= 60 ? "optimal" : "warning"}
+                trend="Stable"
+              />
+              <KPICard
+                icon={<TrendingUp className="h-5 w-5" />}
+                label="Negentropy"
+                value="0.99"
+                target="0.99"
+                status="optimal"
+                trend="Optimal"
+              />
+            </div>
+
+            {/* Earned Value Management */}
+            <Card className="p-6 bg-card/50 backdrop-blur border-primary/20">
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                <TrendingUp className="h-6 w-6 text-primary" />
+                Earned Value Management (EVM)
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <EVMMetric label="Planned Value (PV)" value="$2.4M" percentage={100} />
+                <EVMMetric label="Earned Value (EV)" value="$2.6M" percentage={108} status="ahead" />
+                <EVMMetric label="Actual Cost (AC)" value="$2.3M" percentage={96} status="under" />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Schedule Performance Index (SPI)</span>
+                    <span className="font-bold text-emerald-400">1.08</span>
+                  </div>
+                  <Progress value={108} className="h-2" />
+                  <p className="text-xs text-muted-foreground">8% ahead of schedule</p>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">Cost Performance Index (CPI)</span>
+                    <span className="font-bold text-emerald-400">1.13</span>
+                  </div>
+                  <Progress value={113} className="h-2" />
+                  <p className="text-xs text-muted-foreground">13% under budget</p>
+                </div>
+              </div>
+            </Card>
+
+            {/* Strategic Milestones */}
+            <Card className="p-6 bg-card/50 backdrop-blur border-primary/20">
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                <GitBranch className="h-6 w-6 text-primary" />
+                Strategic Milestones
+              </h2>
+
+              <div className="space-y-4">
+                <MilestoneItem
+                  title="Q1 2025: Foundation & Integration"
+                  status="completed"
+                  progress={100}
+                  items={["IBM Quantum integration", "OpenShift operator", "Core DNA-Lang runtime"]}
+                />
+                <MilestoneItem
+                  title="Q2 2025: Evolution & Consciousness"
+                  status="in-progress"
+                  progress={75}
+                  items={["IIT consciousness layer", "Genetic programming", "Swarm intelligence"]}
+                />
+                <MilestoneItem
+                  title="Q3 2025: Enterprise Hardening"
+                  status="planned"
+                  progress={30}
+                  items={["Multi-tenancy", "Quantum encryption", "Disaster recovery"]}
+                />
+                <MilestoneItem
+                  title="Q4 2025: Market Expansion"
+                  status="planned"
+                  progress={0}
+                  items={["Partner ecosystem", "Industry certifications", "Global deployment"]}
+                />
+              </div>
+            </Card>
+          </TabsContent>
+
+          {/* Quantum Metrics Tab */}
+          <TabsContent value="quantum" className="space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card className="p-6 bg-card/50 backdrop-blur border-primary/20">
+                <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
+                  <Cpu className="h-5 w-5 text-primary" />
+                  Quantum Backend Status
+                </h3>
+
+                <div className="space-y-4">
+                  <BackendStatus name="ibm_kyoto" qubits={127} status="online" queue={45} fidelity={94.2} />
+                  <BackendStatus name="ibm_osaka" qubits={127} status="online" queue={32} fidelity={93.8} />
+                  <BackendStatus name="ibm_brisbane" qubits={127} status="online" queue={28} fidelity={93.5} />
+                  <BackendStatus name="ibm_nazca" qubits={127} status="online" queue={18} fidelity={94.5} />
+                </div>
+              </Card>
+
+              <Card className="p-6 bg-card/50 backdrop-blur border-primary/20">
+                <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
+                  <Activity className="h-5 w-5 text-primary" />
+                  Circuit Execution Metrics
+                </h3>
+
+                <div className="space-y-6">
+                  <MetricRow label="Total Circuits Executed" value="1,247,893" />
+                  <MetricRow label="Average Fidelity" value="94.47%" />
+                  <MetricRow label="Error Mitigation Improvement" value="+1.43%" />
+                  <MetricRow label="Quantum Volume" value="128" />
+                  <MetricRow label="Coherence Time" value="500ms" />
+                  <MetricRow label="Gate Error Rate" value="0.0071" />
+                </div>
+              </Card>
+            </div>
+
+            <Card className="p-6 bg-card/50 backdrop-blur border-primary/20">
+              <h3 className="text-xl font-bold mb-6">Quantum Entanglement Network</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <EntanglementNode node="Node-A" entangled={3} strength={0.98} />
+                <EntanglementNode node="Node-B" entangled={4} strength={0.96} />
+                <EntanglementNode node="Node-C" entangled={2} strength={0.99} />
+                <EntanglementNode node="Node-D" entangled={5} strength={0.94} />
+              </div>
+            </Card>
+          </TabsContent>
+
+          {/* Evolution Tab */}
+          <TabsContent value="evolution" className="space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card className="p-6 bg-card/50 backdrop-blur border-primary/20">
+                <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
+                  <Layers className="h-5 w-5 text-primary" />
+                  Evolution Progress
+                </h3>
+
+                <div className="space-y-6">
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-sm">Generation 1,247</span>
+                      <span className="text-sm font-bold text-primary">Fitness: 0.94</span>
+                    </div>
+                    <Progress value={94} className="h-3" />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <div className="text-2xl font-bold text-primary">1,247</div>
+                      <div className="text-xs text-muted-foreground">Current Generation</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-primary">0.94</div>
+                      <div className="text-xs text-muted-foreground">Best Fitness</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-primary">1,000</div>
+                      <div className="text-xs text-muted-foreground">Population Size</div>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-primary">10%</div>
+                      <div className="text-xs text-muted-foreground">Mutation Rate</div>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+
+              <Card className="p-6 bg-card/50 backdrop-blur border-primary/20">
+                <h3 className="text-xl font-bold mb-6">Genetic Operators</h3>
+
+                <div className="space-y-4">
+                  <OperatorMetric name="Crossover" rate={70} success={89} />
+                  <OperatorMetric name="Mutation" rate={10} success={76} />
+                  <OperatorMetric name="Selection" rate={100} success={94} />
+                  <OperatorMetric name="Elitism" rate={5} success={100} />
+                </div>
+              </Card>
+            </div>
+
+            <Card className="p-6 bg-card/50 backdrop-blur border-primary/20">
+              <h3 className="text-xl font-bold mb-6">Organism Lifecycle</h3>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <LifecycleStage stage="Birth" count={1247} icon={<Zap className="h-5 w-5" />} />
+                <LifecycleStage stage="Growth" count={892} icon={<TrendingUp className="h-5 w-5" />} />
+                <LifecycleStage stage="Reproduction" count={445} icon={<GitBranch className="h-5 w-5" />} />
+                <LifecycleStage stage="Evolution" count={1247} icon={<Activity className="h-5 w-5" />} />
+              </div>
+            </Card>
+          </TabsContent>
+
+          {/* Swarm Intelligence Tab */}
+          <TabsContent value="swarm" className="space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <Card className="p-6 bg-card/50 backdrop-blur border-primary/20">
+                <h3 className="text-xl font-bold mb-4">Load Balancers</h3>
+                <div className="space-y-3">
+                  <AgentStatus name="LB-01" role="Primary" status="active" load={78} />
+                  <AgentStatus name="LB-02" role="Secondary" status="active" load={65} />
+                  <AgentStatus name="LB-03" role="Backup" status="standby" load={12} />
+                </div>
+              </Card>
+
+              <Card className="p-6 bg-card/50 backdrop-blur border-primary/20">
+                <h3 className="text-xl font-bold mb-4">Security Guards</h3>
+                <div className="space-y-3">
+                  <AgentStatus name="SG-01" role="Firewall" status="active" load={45} />
+                  <AgentStatus name="SG-02" role="IDS" status="active" load={52} />
+                  <AgentStatus name="SG-03" role="Antibody" status="active" load={38} />
+                  <AgentStatus name="SG-04" role="T-Cell" status="active" load={41} />
+                  <AgentStatus name="SG-05" role="Monitor" status="active" load={29} />
+                </div>
+              </Card>
+
+              <Card className="p-6 bg-card/50 backdrop-blur border-primary/20">
+                <h3 className="text-xl font-bold mb-4">Optimizers</h3>
+                <div className="space-y-3">
+                  <AgentStatus name="OPT-01" role="Quantum" status="active" load={88} />
+                  <AgentStatus name="OPT-02" role="Classical" status="active" load={72} />
+                </div>
+              </Card>
+            </div>
+
+            <Card className="p-6 bg-card/50 backdrop-blur border-primary/20">
+              <h3 className="text-xl font-bold mb-6">Consensus Metrics</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-primary mb-2">99.97%</div>
+                  <div className="text-sm text-muted-foreground">Byzantine Fault Tolerance</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-primary mb-2">2.3s</div>
+                  <div className="text-sm text-muted-foreground">Average Consensus Time</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-primary mb-2">64/64</div>
+                  <div className="text-sm text-muted-foreground">Nodes in Agreement</div>
+                </div>
+              </div>
+            </Card>
+          </TabsContent>
+
+          {/* Security Tab */}
+          <TabsContent value="security" className="space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card className="p-6 bg-card/50 backdrop-blur border-primary/20">
+                <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
+                  <Shield className="h-5 w-5 text-primary" />
+                  Immune System Status
+                </h3>
+
+                <div className="space-y-4">
+                  <ImmuneMetric type="Antibodies Generated" count={1247} status="active" />
+                  <ImmuneMetric type="T-Cells Activated" count={89} status="active" />
+                  <ImmuneMetric type="Threats Neutralized" count={34} status="success" />
+                  <ImmuneMetric type="False Positives" count={2} status="low" />
+                </div>
+              </Card>
+
+              <Card className="p-6 bg-card/50 backdrop-blur border-primary/20">
+                <h3 className="text-xl font-bold mb-6">Quantum Encryption</h3>
+
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center py-2 border-b border-border">
+                    <span className="text-sm text-muted-foreground">Protocol</span>
+                    <Badge className="bg-primary/20 text-primary border-primary/30">BB84</Badge>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-border">
+                    <span className="text-sm text-muted-foreground">Key Length</span>
+                    <span className="font-mono">256-bit</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-border">
+                    <span className="text-sm text-muted-foreground">QBER</span>
+                    <span className="font-bold text-emerald-400">0.8%</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2">
+                    <span className="text-sm text-muted-foreground">Keys Generated</span>
+                    <span className="font-mono">12,847</span>
+                  </div>
+                </div>
+              </Card>
+            </div>
+
+            <Card className="p-6 bg-card/50 backdrop-blur border-primary/20">
+              <h3 className="text-xl font-bold mb-6">Recent Security Events</h3>
+              <div className="space-y-3">
+                <SecurityEvent
+                  type="Threat Detected"
+                  severity="medium"
+                  message="SQL injection attempt blocked"
+                  time="2 minutes ago"
+                />
+                <SecurityEvent
+                  type="Antibody Generated"
+                  severity="low"
+                  message="New pattern recognized and neutralized"
+                  time="15 minutes ago"
+                />
+                <SecurityEvent
+                  type="System Update"
+                  severity="info"
+                  message="Quantum key rotation completed"
+                  time="1 hour ago"
+                />
+              </div>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
+  )
+}
+
+function KPICard({
+  icon,
+  label,
+  value,
+  target,
+  status,
+  trend,
+}: {
+  icon: React.ReactNode
+  label: string
+  value: string
+  target: string
+  status: "optimal" | "warning" | "critical"
+  trend: string
+}) {
+  const statusColors = {
+    optimal: "text-emerald-400",
+    warning: "text-yellow-400",
+    critical: "text-red-400",
+  }
+
+  return (
+    <Card className="p-6 bg-card/50 backdrop-blur border-primary/20">
+      <div className="flex items-center justify-between mb-4">
+        <div className="text-primary">{icon}</div>
+        <Badge className={`${statusColors[status]} bg-transparent border-current`}>{status}</Badge>
+      </div>
+      <div className="text-3xl font-bold mb-1">{value}</div>
+      <div className="text-sm text-muted-foreground mb-2">{label}</div>
+      <div className="flex items-center justify-between text-xs">
+        <span className="text-muted-foreground">Target: {target}</span>
+        <span className="text-emerald-400">{trend}</span>
+      </div>
+    </Card>
+  )
+}
+
+function EVMMetric({
+  label,
+  value,
+  percentage,
+  status,
+}: {
+  label: string
+  value: string
+  percentage: number
+  status?: "ahead" | "under"
+}) {
+  return (
+    <div className="space-y-2">
+      <div className="flex justify-between items-center">
+        <span className="text-sm text-muted-foreground">{label}</span>
+        {status && (
+          <Badge className={status === "ahead" ? "bg-emerald-500/20 text-emerald-400" : "bg-blue-500/20 text-blue-400"}>
+            {status === "ahead" ? "Ahead" : "Under Budget"}
+          </Badge>
+        )}
+      </div>
+      <div className="text-2xl font-bold">{value}</div>
+      <Progress value={percentage} className="h-2" />
+    </div>
+  )
+}
+
+function MilestoneItem({
+  title,
+  status,
+  progress,
+  items,
+}: {
+  title: string
+  status: "completed" | "in-progress" | "planned"
+  progress: number
+  items: string[]
+}) {
+  const statusIcons = {
+    completed: <CheckCircle className="h-5 w-5 text-emerald-400" />,
+    "in-progress": <Clock className="h-5 w-5 text-primary" />,
+    planned: <AlertCircle className="h-5 w-5 text-muted-foreground" />,
+  }
+
+  return (
+    <div className="border border-border rounded-lg p-4">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-3">
+          {statusIcons[status]}
+          <h4 className="font-semibold">{title}</h4>
+        </div>
+        <span className="text-sm font-bold text-primary">{progress}%</span>
+      </div>
+      <Progress value={progress} className="h-2 mb-3" />
+      <ul className="space-y-1">
+        {items.map((item, i) => (
+          <li key={i} className="text-sm text-muted-foreground flex items-center gap-2">
+            <div className="h-1 w-1 rounded-full bg-primary" />
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+function BackendStatus({
+  name,
+  qubits,
+  status,
+  queue,
+  fidelity,
+}: {
+  name: string
+  qubits: number
+  status: string
+  queue: number
+  fidelity: number
+}) {
+  return (
+    <div className="flex items-center justify-between p-3 border border-border rounded-lg">
+      <div>
+        <div className="font-semibold">{name}</div>
+        <div className="text-xs text-muted-foreground">{qubits} qubits</div>
+      </div>
+      <div className="text-right">
+        <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30 mb-1">{status}</Badge>
+        <div className="text-xs text-muted-foreground">
+          Queue: {queue} | {fidelity}%
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function MetricRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex justify-between items-center py-2 border-b border-border">
+      <span className="text-sm text-muted-foreground">{label}</span>
+      <span className="font-bold text-primary">{value}</span>
+    </div>
+  )
+}
+
+function EntanglementNode({ node, entangled, strength }: { node: string; entangled: number; strength: number }) {
+  return (
+    <Card className="p-4 bg-card/30 backdrop-blur border-primary/20 text-center">
+      <div className="font-semibold mb-2">{node}</div>
+      <div className="text-2xl font-bold text-primary mb-1">{entangled}</div>
+      <div className="text-xs text-muted-foreground mb-2">Entangled</div>
+      <Progress value={strength * 100} className="h-1" />
+      <div className="text-xs text-muted-foreground mt-1">{(strength * 100).toFixed(1)}%</div>
+    </Card>
+  )
+}
+
+function OperatorMetric({ name, rate, success }: { name: string; rate: number; success: number }) {
+  return (
+    <div className="space-y-2">
+      <div className="flex justify-between items-center">
+        <span className="text-sm">{name}</span>
+        <span className="text-sm font-bold text-primary">{success}% success</span>
+      </div>
+      <div className="flex gap-2">
+        <div className="flex-1">
+          <Progress value={rate} className="h-2" />
+          <div className="text-xs text-muted-foreground mt-1">Rate: {rate}%</div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function LifecycleStage({ stage, count, icon }: { stage: string; count: number; icon: React.ReactNode }) {
+  return (
+    <Card className="p-4 bg-card/30 backdrop-blur border-primary/20 text-center">
+      <div className="text-primary mb-2 flex justify-center">{icon}</div>
+      <div className="text-2xl font-bold mb-1">{count.toLocaleString()}</div>
+      <div className="text-xs text-muted-foreground">{stage}</div>
+    </Card>
+  )
+}
+
+function AgentStatus({
+  name,
+  role,
+  status,
+  load,
+}: {
+  name: string
+  role: string
+  status: "active" | "standby"
+  load: number
+}) {
+  return (
+    <div className="flex items-center justify-between p-2 border border-border rounded">
+      <div>
+        <div className="text-sm font-semibold">{name}</div>
+        <div className="text-xs text-muted-foreground">{role}</div>
+      </div>
+      <div className="text-right">
+        <Badge className={status === "active" ? "bg-emerald-500/20 text-emerald-400" : "bg-muted"}>{status}</Badge>
+        <div className="text-xs text-muted-foreground mt-1">{load}% load</div>
+      </div>
+    </div>
+  )
+}
+
+function ImmuneMetric({
+  type,
+  count,
+  status,
+}: {
+  type: string
+  count: number
+  status: "active" | "success" | "low"
+}) {
+  const statusColors = {
+    active: "bg-primary/20 text-primary border-primary/30",
+    success: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+    low: "bg-muted text-muted-foreground",
+  }
+
+  return (
+    <div className="flex justify-between items-center py-3 border-b border-border">
+      <span className="text-sm text-muted-foreground">{type}</span>
+      <div className="flex items-center gap-3">
+        <span className="font-bold">{count.toLocaleString()}</span>
+        <Badge className={statusColors[status]}>{status}</Badge>
+      </div>
+    </div>
+  )
+}
+
+function SecurityEvent({
+  type,
+  severity,
+  message,
+  time,
+}: {
+  type: string
+  severity: "low" | "medium" | "high" | "info"
+  message: string
+  time: string
+}) {
+  const severityColors = {
+    low: "bg-blue-500/20 text-blue-400",
+    medium: "bg-yellow-500/20 text-yellow-400",
+    high: "bg-red-500/20 text-red-400",
+    info: "bg-muted text-muted-foreground",
+  }
+
+  return (
+    <div className="flex items-start gap-3 p-3 border border-border rounded-lg">
+      <Shield className="h-5 w-5 text-primary mt-0.5" />
+      <div className="flex-1">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="font-semibold text-sm">{type}</span>
+          <Badge className={severityColors[severity]}>{severity}</Badge>
+        </div>
+        <p className="text-sm text-muted-foreground mb-1">{message}</p>
+        <span className="text-xs text-muted-foreground">{time}</span>
+      </div>
+    </div>
+  )
+}

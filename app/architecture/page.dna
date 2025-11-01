@@ -1,0 +1,492 @@
+"use client"
+
+import { useState } from "react"
+import { Navigation } from "@/components/navigation"
+import { SectionHeader } from "@/components/section-header"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Cpu, Database, Shield, Brain, GitBranch, Cloud, Lock, Activity, Layers } from "lucide-react"
+
+export default function ArchitecturePage() {
+  const [selectedLayer, setSelectedLayer] = useState("q-core")
+
+  const architectureLayers = [
+    {
+      id: "q-core",
+      name: "Layer 1: Quantum Foundation (Q-Core)",
+      icon: Cpu,
+      color: "cyan",
+      components: [
+        {
+          name: "Qubit Fabric",
+          primitive: "QuantumRegister",
+          description:
+            "Manages physical and simulated qubit pools. Dynamically adapts coherence thresholds and selects optimal quantum circuit routing by minimizing runtime decoherence rates.",
+          features: ["Dynamic coherence adaptation", "Optimal circuit routing", "Decoherence minimization"],
+        },
+        {
+          name: "Quantum Entanglement Bus",
+          primitive: "Bond, ENTANGLE",
+          description:
+            "Facilitates instantaneous, non-local state synchronization via quantum entanglement channels between distributed Swarm Agents.",
+          features: ["Instant state sync", "Bell pair optimization", "Entanglement purity tracking"],
+        },
+        {
+          name: "Negentropic Wormhole",
+          primitive: "Twist, Fold, Splice",
+          description:
+            "Enables negentropic data transmission by transmitting purified quantum information, surpassing classical latency through quantum teleportation.",
+          features: ["Quantum teleportation", "Phase kickback techniques", "Sub-classical latency"],
+        },
+        {
+          name: "Resilience Engine",
+          primitive: "CHECKPOINT, ROLLBACK",
+          description:
+            "Oversees quantum error correction with checkpointing and rollback. Self-mutates quantum circuits to progressively reduce error rates.",
+          features: ["Quantum error correction", "Automatic checkpointing", "Self-healing circuits"],
+        },
+      ],
+    },
+    {
+      id: "programming",
+      name: "Layer 2: Living Quantum Programming",
+      icon: Brain,
+      color: "purple",
+      components: [
+        {
+          name: "Adaptive Compiler & Interpreter",
+          primitive: "DNA-Lang Compiler",
+          description:
+            "Transforms DNA-Lang source into optimized quantum circuits and orchestrates runtime gene expression for live mutation and evolution.",
+          features: ["JIT compilation", "Circuit optimization", "Live code mutation"],
+        },
+        {
+          name: "Quantum-Classical Hybrid Control",
+          primitive: "Hybrid Feedback Loops",
+          description:
+            "Manages hybrid quantum-classical feedback loops for runtime fitness evaluation and dynamic behavior tuning.",
+          features: ["Real-time fitness evaluation", "Adaptive tuning", "Hybrid orchestration"],
+        },
+        {
+          name: "Live Code Introspection",
+          primitive: "Hot-Swap Engine",
+          description:
+            "Enables on-the-fly code inspection, hot-swapping, and seamless upgrades without disrupting quantum coherence.",
+          features: ["Zero-downtime updates", "Code introspection", "Coherence preservation"],
+        },
+      ],
+    },
+    {
+      id: "organism",
+      name: "Layer 3: Organism Runtime & Autopoietic Control",
+      icon: GitBranch,
+      color: "emerald",
+      components: [
+        {
+          name: "Swarm Agent System",
+          primitive: "Multi-Agent Framework",
+          description:
+            "Multi-agent framework where agents represent autonomous digital organisms managing discrete lifecycle tasks such as environment sensing, mutation, and resource management.",
+          features: ["Autonomous agents", "Lifecycle management", "Distributed sensing"],
+        },
+        {
+          name: "Distributed State Synchronization",
+          primitive: "CRDT + Vector Clocks",
+          description:
+            "Uses CRDT-based synchronization and vector clocks for eventual consistency among replicated agents across federated cloud nodes.",
+          features: ["Eventual consistency", "Conflict-free replication", "Federated sync"],
+        },
+        {
+          name: "Autopoietic Feedback Loops",
+          primitive: "Self-Maintenance Cycles",
+          description:
+            "Implements recursive self-maintenance and self-improvement cycles leveraging biological fitness metrics and environmental telemetry.",
+          features: ["Self-improvement", "Fitness optimization", "Recursive enhancement"],
+        },
+      ],
+    },
+    {
+      id: "cloud",
+      name: "Layer 4: Cloud-Native Orchestration",
+      icon: Cloud,
+      color: "blue",
+      components: [
+        {
+          name: "Self-Provisioning Infrastructure",
+          primitive: "Dynamic Resource Allocation",
+          description:
+            "Agents dynamically allocate, scale, and optimize cloud and edge resources transparently based on workload demands.",
+          features: ["Auto-scaling", "Resource optimization", "Edge deployment"],
+        },
+        {
+          name: "Resilient Networking",
+          primitive: "Quantum-Enhanced Protocols",
+          description:
+            "Quantum entanglement-enhanced communication protocols for ultra-low latency and secure inter-service messaging.",
+          features: ["Ultra-low latency", "Quantum security", "Service mesh"],
+        },
+        {
+          name: "Cost and Security Agents",
+          primitive: "Policy Evolution",
+          description:
+            "Continuously evolve policies balancing operational budgets with threat detection and mitigation strategies.",
+          features: ["Cost optimization", "Threat detection", "Policy evolution"],
+        },
+      ],
+    },
+    {
+      id: "ui",
+      name: "Layer 5: User Interaction & Visualization",
+      icon: Activity,
+      color: "yellow",
+      components: [
+        {
+          name: "Reactive Living UI",
+          primitive: "DNA-Lang Reactive Bindings",
+          description:
+            "Presents real-time telemetric insights and system states through interactive dashboards driven by DNA-Lang reactive bindings.",
+          features: ["Real-time updates", "Reactive state", "Live telemetry"],
+        },
+        {
+          name: "Natural Language Interface",
+          primitive: "Cognitive Agents",
+          description:
+            "Cognitive agents interpret user intents, enabling seamless interaction with complex quantum-biological processes.",
+          features: ["Intent recognition", "Natural language", "Cognitive processing"],
+        },
+        {
+          name: "Deep Analytics",
+          primitive: "Quantum Data Modeling",
+          description:
+            "Combines quantum-enhanced data modeling with advanced visualization for predictive insights and decision support.",
+          features: ["Predictive analytics", "Quantum modeling", "Visual insights"],
+        },
+      ],
+    },
+  ]
+
+  const securityFeatures = [
+    {
+      name: "Quantum-Safe Cryptography",
+      description: "Post-quantum cryptographic algorithms resistant to quantum computer attacks",
+      icon: Lock,
+      status: "In Development",
+    },
+    {
+      name: "Biological Immune System",
+      description: "Antibody-based threat detection with T-cell response mechanisms",
+      icon: Shield,
+      status: "Active",
+    },
+    {
+      name: "Multi-Tenancy Isolation",
+      description: "Quantum circuit-level isolation ensuring complete tenant separation",
+      icon: Layers,
+      status: "Planned",
+    },
+    {
+      name: "Disaster Recovery",
+      description: "Quantum state snapshots with instant rollback capabilities",
+      icon: Database,
+      status: "In Development",
+    },
+  ]
+
+  const integrations = [
+    {
+      name: "IBM Quantum",
+      description: "Direct access to IBM Quantum hardware with 127+ qubit systems",
+      icon: Cpu,
+      status: "Connected",
+    },
+    {
+      name: "Red Hat OpenShift",
+      description: "Cloud-native Kubernetes orchestration with operator pattern",
+      icon: Cloud,
+      status: "Connected",
+    },
+    {
+      name: "Prometheus & Alertmanager",
+      description: "Production-grade monitoring, alerting, and telemetry",
+      icon: Activity,
+      status: "Connected",
+    },
+    {
+      name: "Ansible Automation",
+      description: "Infrastructure as code with DNA-Lang native playbooks",
+      icon: GitBranch,
+      status: "In Progress",
+    },
+  ]
+
+  const getColorClasses = (color: string) => {
+    const colors: Record<string, string> = {
+      cyan: "border-cyan-500/30 bg-cyan-500/10 text-cyan-400",
+      purple: "border-purple-500/30 bg-purple-500/10 text-purple-400",
+      emerald: "border-emerald-500/30 bg-emerald-500/10 text-emerald-400",
+      blue: "border-blue-500/30 bg-blue-500/10 text-blue-400",
+      yellow: "border-yellow-500/30 bg-yellow-500/10 text-yellow-400",
+    }
+    return colors[color] || colors.cyan
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-950">
+      <Navigation />
+
+      <main className="container mx-auto px-4 py-8">
+        <SectionHeader
+          title="Technical Architecture"
+          subtitle="S.E.Q.N. Architecture: Self-Evolving Quantum Negentropic Web System"
+        />
+
+        <Tabs defaultValue="layers" className="mt-8">
+          <TabsList className="grid w-full grid-cols-3 bg-slate-900/50 border border-slate-800">
+            <TabsTrigger value="layers">Architecture Layers</TabsTrigger>
+            <TabsTrigger value="security">Security & Resilience</TabsTrigger>
+            <TabsTrigger value="integrations">Integrations</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="layers" className="mt-6">
+            <div className="space-y-6">
+              {architectureLayers.map((layer) => {
+                const Icon = layer.icon
+                return (
+                  <Card key={layer.id} className="bg-slate-900/50 border-slate-800">
+                    <CardHeader>
+                      <div className="flex items-center gap-3">
+                        <div className={`p-3 rounded-lg border ${getColorClasses(layer.color)}`}>
+                          <Icon className="h-6 w-6" />
+                        </div>
+                        <CardTitle className="text-xl">{layer.name}</CardTitle>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid gap-4 md:grid-cols-2">
+                        {layer.components.map((component, idx) => (
+                          <div
+                            key={idx}
+                            className="p-4 rounded-lg bg-slate-800/50 border border-slate-700/50 hover:border-cyan-500/50 transition-colors"
+                          >
+                            <div className="flex items-start justify-between mb-2">
+                              <h4 className="font-semibold text-slate-200">{component.name}</h4>
+                              <Badge variant="outline" className="text-xs border-slate-600 text-slate-400">
+                                {component.primitive}
+                              </Badge>
+                            </div>
+                            <p className="text-sm text-slate-400 mb-3">{component.description}</p>
+                            <div className="flex flex-wrap gap-2">
+                              {component.features.map((feature, fidx) => (
+                                <Badge
+                                  key={fidx}
+                                  variant="outline"
+                                  className="text-xs border-cyan-500/30 text-cyan-400"
+                                >
+                                  {feature}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )
+              })}
+            </div>
+
+            <Card className="mt-6 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-cyan-500/30">
+              <CardHeader>
+                <CardTitle className="text-cyan-400">Autopoietic Design Principles</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <h4 className="font-semibold text-slate-200">Self-Organization</h4>
+                    <p className="text-sm text-slate-400">
+                      System components autonomously organize and adapt without central control, mimicking biological
+                      cellular organization.
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="font-semibold text-slate-200">Recursive Enhancement</h4>
+                    <p className="text-sm text-slate-400">
+                      Every layer continuously optimizes itself through feedback loops, driving down entropy and
+                      extending operational longevity.
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="font-semibold text-slate-200">Negentropic Evolution</h4>
+                    <p className="text-sm text-slate-400">
+                      System actively reduces disorder and increases organization over time, contrary to traditional
+                      software entropy.
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="font-semibold text-slate-200">Quantum Coherence</h4>
+                    <p className="text-sm text-slate-400">
+                      Maintains quantum state integrity across distributed systems through entanglement and error
+                      correction.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="security" className="mt-6">
+            <div className="grid gap-6 md:grid-cols-2">
+              {securityFeatures.map((feature, idx) => {
+                const Icon = feature.icon
+                return (
+                  <Card
+                    key={idx}
+                    className="bg-slate-900/50 border-slate-800 hover:border-cyan-500/50 transition-colors"
+                  >
+                    <CardHeader>
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
+                          <Icon className="h-6 w-6 text-cyan-400" />
+                        </div>
+                        <div className="flex-1">
+                          <CardTitle className="text-lg">{feature.name}</CardTitle>
+                          <Badge
+                            variant="outline"
+                            className={
+                              feature.status === "Active"
+                                ? "border-emerald-500/30 text-emerald-400 mt-2"
+                                : feature.status === "In Development"
+                                  ? "border-cyan-500/30 text-cyan-400 mt-2"
+                                  : "border-slate-500/30 text-slate-400 mt-2"
+                            }
+                          >
+                            {feature.status}
+                          </Badge>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-slate-400 text-sm">{feature.description}</p>
+                    </CardContent>
+                  </Card>
+                )
+              })}
+            </div>
+
+            <Card className="mt-6 bg-slate-900/50 border-slate-800">
+              <CardHeader>
+                <CardTitle>Resilience by Design</CardTitle>
+                <CardDescription>Multi-layer fault tolerance and self-healing capabilities</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="p-4 rounded-lg bg-slate-800/50 border border-slate-700/50">
+                    <h4 className="font-semibold text-slate-200 mb-2">Infrastructure Layer</h4>
+                    <ul className="space-y-1 text-sm text-slate-400">
+                      <li>• Multi-region deployment with automatic failover</li>
+                      <li>• Quantum state replication across availability zones</li>
+                      <li>• Self-healing infrastructure with automatic recovery</li>
+                    </ul>
+                  </div>
+                  <div className="p-4 rounded-lg bg-slate-800/50 border border-slate-700/50">
+                    <h4 className="font-semibold text-slate-200 mb-2">Application Layer</h4>
+                    <ul className="space-y-1 text-sm text-slate-400">
+                      <li>• Circuit breakers with adaptive thresholds</li>
+                      <li>• Graceful degradation with fallback mechanisms</li>
+                      <li>• Chaos engineering with controlled failure injection</li>
+                    </ul>
+                  </div>
+                  <div className="p-4 rounded-lg bg-slate-800/50 border border-slate-700/50">
+                    <h4 className="font-semibold text-slate-200 mb-2">Data Layer</h4>
+                    <ul className="space-y-1 text-sm text-slate-400">
+                      <li>• Quantum error correction with surface codes</li>
+                      <li>• Continuous backup with point-in-time recovery</li>
+                      <li>• Data integrity verification through quantum checksums</li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="integrations" className="mt-6">
+            <div className="grid gap-6 md:grid-cols-2">
+              {integrations.map((integration, idx) => {
+                const Icon = integration.icon
+                return (
+                  <Card
+                    key={idx}
+                    className="bg-slate-900/50 border-slate-800 hover:border-cyan-500/50 transition-colors"
+                  >
+                    <CardHeader>
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-lg bg-purple-500/10 border border-purple-500/30">
+                          <Icon className="h-6 w-6 text-purple-400" />
+                        </div>
+                        <div className="flex-1">
+                          <CardTitle className="text-lg">{integration.name}</CardTitle>
+                          <Badge
+                            variant="outline"
+                            className={
+                              integration.status === "Connected"
+                                ? "border-emerald-500/30 text-emerald-400 mt-2"
+                                : "border-cyan-500/30 text-cyan-400 mt-2"
+                            }
+                          >
+                            {integration.status}
+                          </Badge>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-slate-400 text-sm">{integration.description}</p>
+                    </CardContent>
+                  </Card>
+                )
+              })}
+            </div>
+
+            <Card className="mt-6 bg-slate-900/50 border-slate-800">
+              <CardHeader>
+                <CardTitle>Technology Stack</CardTitle>
+                <CardDescription>Enterprise-grade components powering DNA-Lang Quantum Platform</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <div className="space-y-2">
+                    <h4 className="font-semibold text-cyan-400">Quantum Computing</h4>
+                    <ul className="space-y-1 text-sm text-slate-400">
+                      <li>• IBM Quantum (127+ qubits)</li>
+                      <li>• Qiskit Framework</li>
+                      <li>• Quantum Error Correction</li>
+                      <li>• Quantum Teleportation</li>
+                    </ul>
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="font-semibold text-purple-400">Cloud Infrastructure</h4>
+                    <ul className="space-y-1 text-sm text-slate-400">
+                      <li>• Red Hat OpenShift</li>
+                      <li>• Kubernetes Operators</li>
+                      <li>• Ansible Automation</li>
+                      <li>• Multi-Cloud Support</li>
+                    </ul>
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="font-semibold text-emerald-400">Observability</h4>
+                    <ul className="space-y-1 text-sm text-slate-400">
+                      <li>• Prometheus Metrics</li>
+                      <li>• Alertmanager</li>
+                      <li>• Distributed Tracing</li>
+                      <li>• Real-time Telemetry</li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </main>
+    </div>
+  )
+}
