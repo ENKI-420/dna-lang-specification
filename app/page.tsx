@@ -9,7 +9,8 @@ import { EvolutionSimulator } from "@/components/evolution-simulator"
 import { ArchitectureVisualizer } from "@/components/architecture-visualizer"
 import { SyntaxBrowser } from "@/components/syntax-browser"
 import { BusinessPlan } from "@/components/business-plan"
-import { Dna, Brain, Atom, GitBranch, Code, Network, BookOpen, TrendingUp } from "lucide-react"
+import { TerminalInterface } from "@/components/terminal-interface"
+import { Dna, Brain, Atom, GitBranch, Code, Network, BookOpen, TrendingUp, Terminal } from "lucide-react"
 
 export default function Page() {
   return (
@@ -27,7 +28,7 @@ export default function Page() {
 
         {/* Main Tabs */}
         <Tabs defaultValue="organisms" className="space-y-6">
-          <TabsList className="grid grid-cols-8 w-full bg-card/50 backdrop-blur">
+          <TabsList className="grid grid-cols-9 w-full bg-card/50 backdrop-blur">
             <TabsTrigger value="organisms" className="flex items-center gap-2">
               <Dna className="h-4 w-4" />
               <span className="hidden sm:inline">Organisms</span>
@@ -55,6 +56,10 @@ export default function Page() {
             <TabsTrigger value="syntax" className="flex items-center gap-2">
               <BookOpen className="h-4 w-4" />
               <span className="hidden sm:inline">Syntax</span>
+            </TabsTrigger>
+            <TabsTrigger value="terminal" className="flex items-center gap-2">
+              <Terminal className="h-4 w-4" />
+              <span className="hidden sm:inline">Terminal</span>
             </TabsTrigger>
             <TabsTrigger value="business" className="flex items-center gap-2">
               <TrendingUp className="h-4 w-4" />
@@ -88,6 +93,10 @@ export default function Page() {
 
           <TabsContent value="syntax" className="space-y-6">
             <SyntaxBrowser />
+          </TabsContent>
+
+          <TabsContent value="terminal" className="space-y-6">
+            <TerminalInterface />
           </TabsContent>
 
           <TabsContent value="business" className="space-y-6">

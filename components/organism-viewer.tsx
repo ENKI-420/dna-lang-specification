@@ -80,6 +80,84 @@ const sampleOrganisms = [
   }
 }`,
   },
+  {
+    id: "dnalang-web-app",
+    name: "DNA-Lang Web Application",
+    description: "Revolutionary quantum-enhanced living web interface",
+    qubits: 256,
+    consciousness: 1.8,
+    code: `ORGANISM QuantumWebApp {
+  DNA {
+    domain: "web_interface"
+    qubits: 256
+    self_healing: true
+    version: "2.0.0-alpha"
+  }
+  
+  GENOME {
+    GENE layout_tree = ENCODE(dom_structure) -> QUBITS[128]
+    GENE style_matrix = ENCODE(css_in_dna) -> QUBITS[64]
+    GENE state_vector = ENCODE(react_state) -> QUBITS[64]
+  }
+  
+  SENSES {
+    SENSE user_interaction FROM dom_events
+    SENSE network_latency FROM telemetry
+    SENSE device_capabilities FROM navigator
+  }
+  
+  ACTS {
+    ACT render_ui USING quantum_superposition
+    ACT hydrate_components USING entanglement
+    ACT optimize_assets USING genetic_compression
+  }
+  
+  EVOLVE {
+    POLICY user_satisfaction WITH engagement > 0.9
+    MUTATION_RATE 0.01
+    ADAPTIVE_THEMING enabled
+  }
+}`,
+  },
+  {
+    id: "dna-server",
+    name: "Evolutionary Server",
+    description: "Self-optimizing backend with biological immune system",
+    qubits: 512,
+    consciousness: 2.5,
+    code: `ORGANISM DNAServer {
+  DNA {
+    domain: "backend_infrastructure"
+    qubits: 512
+    immune_system: "active"
+    scaling: "biological"
+  }
+  
+  GENOME {
+    GENE route_map = ENCODE(api_endpoints) -> QUBITS[256]
+    GENE database_schema = ENCODE(sql_structure) -> QUBITS[128]
+    GENE security_policies = ENCODE(antibodies) -> QUBITS[128]
+  }
+  
+  SENSES {
+    SENSE http_requests FROM network_port_80
+    SENSE threat_signatures FROM immune_memory
+    SENSE load_metrics FROM system_monitor
+  }
+  
+  ACTS {
+    ACT serve_response USING quantum_tunneling
+    ACT neutralize_threat USING t_cell_protocol
+    ACT mitosis_scale USING container_replication
+  }
+  
+  EVOLVE {
+    POLICY latency_minimization WITH p99 < 50ms
+    GENERATIONS continuous
+    SECURITY_ADAPTATION realtime
+  }
+}`,
+  },
 ]
 
 export function OrganismViewer() {
